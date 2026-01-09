@@ -1,0 +1,54 @@
+{
+    "name": "forgestack-os-cli",
+    "version": "0.1.1",
+    "description": "ForgeStack OS CLI - Generate production-ready full-stack SaaS applications",
+    "main": "dist/index.js",
+    "bin": {
+        "forgestack": "./dist/index.js"
+    },
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "dev": "tsx watch src/index.ts",
+        "build": "tsc",
+        "test": "vitest",
+        "lint": "eslint src --ext .ts"
+    },
+    "keywords": [
+        "cli",
+        "generator",
+        "saas",
+        "full-stack"
+    ],
+    "author": {
+        "name": "Sumit Chauhan",
+        "url": "https://github.com/halloffame12"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "chalk": "^4.1.2",
+        "commander": "^12.0.0",
+        "ejs": "^3.1.9",
+        "execa": "^5.1.1",
+        "fs-extra": "^11.2.0",
+        "inquirer": "^9.2.15",
+        "ora": "^5.4.1",
+        "validate-npm-package-name": "^5.0.0"
+    },
+    "devDependencies": {
+        "@types/ejs": "^3.1.5",
+        "@types/fs-extra": "^11.0.4",
+        "@types/inquirer": "^9.0.7",
+        "@types/node": "^20.19.27",
+        "@types/validate-npm-package-name": "^4.0.2",
+        "@typescript-eslint/eslint-plugin": "^6.19.0",
+        "@typescript-eslint/parser": "^6.19.0",
+        "eslint": "^8.56.0",
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.3",
+        "vitest": "^1.6.1"
+    }
+}

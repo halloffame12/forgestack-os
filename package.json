@@ -1,0 +1,30 @@
+{
+    "name": "forgestack-os",
+    "version": "0.1.0",
+    "private": true,
+    "description": "One platform. Any stack. Production-ready.",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "dev:cli": "npm run dev --workspace=@forgestack/cli",
+        "build": "npm run build --workspaces",
+        "test": "npm run test --workspaces"
+    },
+    "keywords": [
+        "cli",
+        "saas",
+        "full-stack",
+        "developer-tools",
+        "platform"
+    ],
+    "author": {
+        "name": "Sumit Chauhan",
+        "url": "https://github.com/halloffame12"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/halloffame12/forgestack-os"
+    }
+}
