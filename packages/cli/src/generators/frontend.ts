@@ -37,26 +37,24 @@ async function generateReactVite(config: StackConfig, frontendDir: string) {
       lint: 'eslint . --ext ts,tsx',
     },
     dependencies: {
-      react: '^18.2.0',
-      'react-dom': '^18.2.0',
-      'react-router-dom': '^6.21.3',
-      axios: '^1.6.5',
-      ...(config.auth === 'clerk' && { '@clerk/clerk-react': '^4.30.7' }),
-      ...(config.auth === 'supabase' && { '@supabase/supabase-js': '^2.39.3' }),
-      ...(config.auth === 'firebase' && { firebase: '^10.7.2' }),
+      react: '^19.2.0',
+      'react-dom': '^19.2.0',
+      'react-router-dom': '^7.1.0',
+      axios: '^1.7.9',
+      ...(config.auth === 'clerk' && { '@clerk/clerk-react': '^5.40.0' }),
+      ...(config.auth === 'supabase' && { '@supabase/supabase-js': '^2.47.0' }),
+      ...(config.auth === 'firebase' && { firebase: '^11.1.0' }),
     },
     devDependencies: {
-      '@types/react': '^18.2.48',
-      '@types/react-dom': '^18.2.18',
-      '@vitejs/plugin-react': '^4.2.1',
-      typescript: '^5.3.3',
-      vite: '^5.0.11',
-      'tailwindcss': '^3.4.1',
-      'autoprefixer': '^10.4.17',
-      'postcss': '^8.4.33',
-      'eslint': '^8.56.0',
-      '@typescript-eslint/eslint-plugin': '^6.19.0',
-      '@typescript-eslint/parser': '^6.19.0',
+      '@types/react': '^19.0.0',
+      '@types/react-dom': '^19.0.0',
+      '@vitejs/plugin-react': '^4.3.4',
+      typescript: '^5.7.2',
+      vite: '^7.3.0',
+      'tailwindcss': '^4.0.0',
+      'autoprefixer': '^11.0.0',
+      'postcss': '^8.4.49',
+      'eslint': '^9.16.0',
     },
   };
 
@@ -87,10 +85,10 @@ export default defineConfig({
     compilerOptions: {
       target: 'ES2020',
       useDefineForClassFields: true,
-      lib: ['ES2020', 'DOM', 'DOM.Iterable'],
+      lib: ['ES2022', 'DOM', 'DOM.Iterable'],
       module: 'ESNext',
       skipLibCheck: true,
-      moduleResolution: 'bundler',
+      moduleResolution: 'bundle',
       allowImportingTsExtensions: true,
       resolveJsonModule: true,
       isolatedModules: true,
@@ -100,12 +98,28 @@ export default defineConfig({
       noUnusedLocals: true,
       noUnusedParameters: true,
       noFallthroughCasesInSwitch: true,
+      incremental: true,
     },
     include: ['src'],
     references: [{ path: './tsconfig.node.json' }],
   };
 
   await fs.writeJSON(path.join(frontendDir, 'tsconfig.json'), tsConfig, { spaces: 2 });
+
+  // tsconfig.node.json
+  const tsConfigNode = {
+    compilerOptions: {
+      composite: true,
+      skipLibCheck: true,
+      module: 'ESNext',
+      moduleResolution: 'bundle',
+      allowSyntheticDefaultImports: true,
+      strict: true,
+    },
+    include: ['vite.config.ts'],
+  };
+
+  await fs.writeJSON(path.join(frontendDir, 'tsconfig.node.json'), tsConfigNode, { spaces: 2 });
 
   // Tailwind config
   const tailwindConfig = `/** @type {import('tailwindcss').Config} */
@@ -289,25 +303,25 @@ async function generateNextJS(config: StackConfig, frontendDir: string) {
       lint: 'next lint',
     },
     dependencies: {
-      react: '^18.2.0',
-      'react-dom': '^18.2.0',
-      next: '^14.1.0',
-      axios: '^1.6.5',
-      ...(config.auth === 'clerk' && { '@clerk/nextjs': '^4.29.3' }),
-      ...(config.auth === 'supabase' && { '@supabase/supabase-js': '^2.39.3', '@supabase/ssr': '^0.0.10' }),
-      ...(config.auth === 'firebase' && { firebase: '^10.7.2' }),
-      ...(config.auth === 'authjs' && { 'next-auth': '^4.24.5' }),
+      react: '^19.2.0',
+      'react-dom': '^19.2.0',
+      next: '^16.0.0',
+      axios: '^1.7.9',
+      ...(config.auth === 'clerk' && { '@clerk/nextjs': '^6.9.0' }),
+      ...(config.auth === 'supabase' && { '@supabase/supabase-js': '^2.47.0', '@supabase/ssr': '^0.5.2' }),
+      ...(config.auth === 'firebase' && { firebase: '^11.1.0' }),
+      ...(config.auth === 'authjs' && { 'next-auth': '^5.0.0-beta.25' }),
     },
     devDependencies: {
-      '@types/node': '^20.11.5',
-      '@types/react': '^18.2.48',
-      '@types/react-dom': '^18.2.18',
-      typescript: '^5.3.3',
-      tailwindcss: '^3.4.1',
-      autoprefixer: '^10.4.17',
-      postcss: '^8.4.33',
-      eslint: '^8.56.0',
-      'eslint-config-next': '^14.1.0',
+      '@types/node': '^20.17.0',
+      '@types/react': '^19.0.0',
+      '@types/react-dom': '^19.0.0',
+      typescript: '^5.7.2',
+      tailwindcss: '^4.0.0',
+      autoprefixer: '^11.0.0',
+      postcss: '^8.4.49',
+      eslint: '^9.16.0',
+      'eslint-config-next': '^16.0.0',
     },
   };
 

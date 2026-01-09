@@ -8,9 +8,13 @@ export async function generateCommon(config: StackConfig, targetDir: string) {
         name: config.projectName,
         version: '0.1.0',
         private: true,
+        engines: {
+            node: '>=20.0.0'
+        },
         workspaces: ['frontend', 'backend'],
         scripts: {
-            dev: 'concurrently "npm run dev --workspace=frontend" "npm run dev --workspace=backend"',
+            setup: 'cp .env.example .env || copy .env.example .env',
+            dev: 'npx concurrently "npm run dev --workspace=frontend" "npm run dev --workspace=backend"',
             'dev:frontend': 'npm run dev --workspace=frontend',
             'dev:backend': 'npm run dev --workspace=backend',
             build: 'npm run build --workspaces',
