@@ -464,7 +464,7 @@ Copyright © 2026 Sumit Chauhan
 
 - **Issues**: [GitHub Issues](https://github.com/halloffame12/forgestack-os/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/halloffame12/forgestack-os/discussions)
-- **Email**: [Your Email]
+- **Email**: [sumitchauhan10062004@gmail.com](mailto:sumitchauhan10062004@gmail.com)
 
 ---
 

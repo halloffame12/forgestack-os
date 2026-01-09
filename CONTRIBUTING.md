@@ -31,6 +31,10 @@ npm install
 # Run CLI in development mode
 cd packages/cli
 npm run dev create test-app
+
+# Optional: Link for local testing
+# This allows you to run 'forgestack' globally while developing
+npm link
 ```
 
 ## 📝 Adding a New Template
@@ -205,6 +209,6 @@ Contributors will be recognized in:
 ## 📞 Questions?
 
 - Open a GitHub Discussion
-- Reach out to [@halloffame12](https://github.com/halloffame12)
+- Reach out to [@halloffame12](https://github.com/halloffame12) or email [sumitchauhan10062004@gmail.com](mailto:sumitchauhan10062004@gmail.com)
 
 Thank you for contributing to ForgeStack OS! 🚀
