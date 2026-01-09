@@ -29,7 +29,7 @@ const AnimatedTerminal = () => {
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        let timeoutId: NodeJS.Timeout;
+        let timeoutId: ReturnType<typeof setTimeout>;
         let currentLine = 0;
         let isMounted = true;
 
