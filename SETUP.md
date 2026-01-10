@@ -1,6 +1,6 @@
 # ForgeStack OS - Complete Setup & Deployment Guide
 
-This guide provides step-by-step instructions for setting up ForgeStack OS locally, deploying to production, and publishing to npm.
+This guide provides step-by-step instructions for setting up ForgeStack OS v0.2.5 locally, deploying to production, and publishing to npm.
 
 ---
 

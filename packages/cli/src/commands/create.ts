@@ -6,12 +6,12 @@ import { promptForStack } from '../utils/prompts';
 import { validateStackConfig } from '../utils/validators';
 import { generateProject } from '../generators';
 
-export async function createCommand(projectName: string, options: any) {
+export async function createCommand(projectName: string, options: Record<string, unknown>) {
     try {
         // Display welcome banner
         console.log(chalk.bold.cyan('\n╔═══════════════════════════════════════╗'));
         console.log(chalk.bold.cyan('║                                       ║'));
-        console.log(chalk.bold.cyan('║        🚀 ForgeStack OS v0.1.0       ║'));
+        console.log(chalk.bold.cyan('║        🚀 ForgeStack OS v0.2.1       ║'));
         console.log(chalk.bold.cyan('║                                       ║'));
         console.log(chalk.bold.cyan('║  One platform. Any stack. Production. ║'));
         console.log(chalk.bold.cyan('║                                       ║'));
@@ -19,12 +19,7 @@ export async function createCommand(projectName: string, options: any) {
 
         // Check if directory already exists
         const targetDir = path.resolve(process.cwd(), projectName);
-
-        // Basic path sanitization for security
-        if (projectName.includes('..') || projectName.includes('/') || projectName.includes('\\')) {
-            logger.error(`Invalid project name: "${projectName}". Please use a simple name.`);
-            process.exit(1);
-        }
+        const actualProjectName = path.basename(targetDir);
 
         if (await fs.pathExists(targetDir)) {
             logger.error(`Directory "${projectName}" already exists!`);
@@ -35,14 +30,14 @@ export async function createCommand(projectName: string, options: any) {
         try {
             await fs.ensureDir(targetDir);
             await fs.remove(targetDir);
-        } catch (err) {
+        } catch {
             logger.error(`Permission denied! Cannot create directory at "${targetDir}".`);
             process.exit(1);
         }
 
         // Prompt for stack configuration
         logger.title('📋 Configure Your Stack');
-        const config = await promptForStack(projectName, options);
+        const config = await promptForStack(actualProjectName, options);
 
         // Validate configuration
         const validation = validateStackConfig(config);
@@ -82,7 +77,9 @@ export async function createCommand(projectName: string, options: any) {
 
         console.log(chalk.bold('Next steps:\n'));
         console.log(chalk.cyan(`  cd ${projectName}`));
-        console.log(chalk.cyan('  npm install'));
+        if (config.skipInstall) {
+            console.log(chalk.cyan('  npm install'));
+        }
         console.log(chalk.cyan('  npm run dev\n'));
 
         console.log(chalk.gray('For more information, check out the README.md in your project.\n'));

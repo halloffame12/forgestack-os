@@ -60,7 +60,7 @@ function normalizeInput(category: 'frontend' | 'backend' | 'auth' | 'database', 
     return mappings[category][v] || v;
 }
 
-export async function promptForStack(projectName: string, options: any = {}): Promise<StackConfig> {
+export async function promptForStack(projectName: string, options: Record<string, any> = {}): Promise<StackConfig> {
     console.log('\n');
 
     // If flags are provided, normalize and return immediately for non-interactive mode
@@ -76,6 +76,8 @@ export async function promptForStack(projectName: string, options: any = {}): Pr
                 : 'rest',
             docker: options.docker !== false, // Default to true unless --no-docker
             multiTenant: !!options.multiTenant,
+            skipInstall: !!options.skipInstall,
+            skipGit: !!options.skipGit,
         } as StackConfig;
     }
 
@@ -87,8 +89,8 @@ export async function promptForStack(projectName: string, options: any = {}): Pr
             choices: [
                 { name: 'React + Vite (Recommended)', value: 'react-vite' },
                 { name: 'Next.js 14 (App Router)', value: 'nextjs' },
-                { name: 'Vue + Vite', value: 'vue-vite' },
-                { name: 'SvelteKit', value: 'sveltekit' },
+                { name: 'Vue + Vite', value: 'vue-vite', disabled: 'Coming in Phase 5' },
+                { name: 'SvelteKit', value: 'sveltekit', disabled: 'Coming in Phase 5' },
             ],
             default: 'react-vite',
         },
@@ -101,7 +103,7 @@ export async function promptForStack(projectName: string, options: any = {}): Pr
                 { name: 'Node.js + Fastify', value: 'fastify' },
                 { name: 'NestJS', value: 'nestjs' },
                 { name: 'Bun + Elysia', value: 'bun-elysia' },
-                { name: 'Go + Fiber (Experimental)', value: 'go-fiber' },
+                { name: 'Go + Fiber (Experimental)', value: 'go-fiber', disabled: 'Coming in Phase 6' },
             ],
             default: 'express',
         },

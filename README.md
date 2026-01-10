@@ -3,7 +3,7 @@
 <div align="center">
 
 ![ForgeStack OS](https://img.shields.io/badge/ForgeStack-OS-blue?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-0.1.1-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-0.2.5-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=for-the-badge&logo=typescript)
 ![Node](https://img.shields.io/badge/Node-20+-green?style=for-the-badge&logo=node.js)

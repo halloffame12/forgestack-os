@@ -37,8 +37,8 @@ async function generateReactVite(config: StackConfig, frontendDir: string) {
       lint: 'eslint . --ext ts,tsx',
     },
     dependencies: {
-      react: '^19.2.0',
-      'react-dom': '^19.2.0',
+      react: '^19.0.0',
+      'react-dom': '^19.0.0',
       'react-router-dom': '^7.1.0',
       axios: '^1.7.9',
       ...(config.auth === 'clerk' && { '@clerk/clerk-react': '^5.40.0' }),
@@ -50,15 +50,22 @@ async function generateReactVite(config: StackConfig, frontendDir: string) {
       '@types/react-dom': '^19.0.0',
       '@vitejs/plugin-react': '^4.3.4',
       typescript: '^5.7.2',
-      vite: '^7.3.0',
-      'tailwindcss': '^4.0.0',
-      'autoprefixer': '^11.0.0',
+      vite: '^6.0.0',
+      'tailwindcss': '^3.4.0',
+      'autoprefixer': '^10.4.0',
       'postcss': '^8.4.49',
       'eslint': '^9.16.0',
     },
   };
 
   await fs.writeJSON(path.join(frontendDir, 'package.json'), packageJson, { spaces: 2 });
+
+  await fs.writeJSON(path.join(frontendDir, '.eslintrc.json'), {
+    root: true,
+    extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    parser: "@typescript-eslint/parser",
+    plugins: ["@typescript-eslint"]
+  }, { spaces: 2 });
 
   // Vite config
   const viteConfig = `import { defineConfig } from 'vite'
@@ -70,7 +77,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3001',
         changeOrigin: true,
       },
     },
@@ -88,13 +95,14 @@ export default defineConfig({
       lib: ['ES2022', 'DOM', 'DOM.Iterable'],
       module: 'ESNext',
       skipLibCheck: true,
-      moduleResolution: 'bundle',
+      moduleResolution: 'bundler',
       allowImportingTsExtensions: true,
       resolveJsonModule: true,
       isolatedModules: true,
       noEmit: true,
       jsx: 'react-jsx',
       strict: true,
+      types: ['vite/client', 'node'],
       noUnusedLocals: true,
       noUnusedParameters: true,
       noFallthroughCasesInSwitch: true,
@@ -112,7 +120,7 @@ export default defineConfig({
       composite: true,
       skipLibCheck: true,
       module: 'ESNext',
-      moduleResolution: 'bundle',
+      moduleResolution: 'bundler',
       allowSyntheticDefaultImports: true,
       strict: true,
     },
@@ -228,10 +236,10 @@ body {
 
 function getAppComponent(config: StackConfig): string {
   return `import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import DashboardPage from './pages/DashboardPage'
-import LoginPage from './pages/LoginPage'
-import { AuthProvider } from './lib/auth'
+import HomePage from './pages/HomePage.tsx'
+import DashboardPage from './pages/DashboardPage.tsx'
+import LoginPage from './pages/LoginPage.tsx'
+import { AuthProvider } from './lib/auth.tsx'
 ${config.auth === 'clerk' ? "import { ClerkProvider } from '@clerk/clerk-react'" : ''}
 
 function App() {
@@ -256,11 +264,11 @@ export default App
 `;
 }
 
-function getApiClient(config: StackConfig): string {
+function getApiClient(_config: StackConfig): string {
   return `import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -296,6 +304,7 @@ async function generateNextJS(config: StackConfig, frontendDir: string) {
   const packageJson = {
     name: `${config.projectName}-frontend`,
     version: '0.1.0',
+    type: 'module',
     scripts: {
       dev: 'next dev',
       build: 'next build',
@@ -303,9 +312,9 @@ async function generateNextJS(config: StackConfig, frontendDir: string) {
       lint: 'next lint',
     },
     dependencies: {
-      react: '^19.2.0',
-      'react-dom': '^19.2.0',
-      next: '^16.0.0',
+      react: '^19.0.0',
+      'react-dom': '^19.0.0',
+      next: '^15.0.0',
       axios: '^1.7.9',
       ...(config.auth === 'clerk' && { '@clerk/nextjs': '^6.9.0' }),
       ...(config.auth === 'supabase' && { '@supabase/supabase-js': '^2.47.0', '@supabase/ssr': '^0.5.2' }),
@@ -317,15 +326,20 @@ async function generateNextJS(config: StackConfig, frontendDir: string) {
       '@types/react': '^19.0.0',
       '@types/react-dom': '^19.0.0',
       typescript: '^5.7.2',
-      tailwindcss: '^4.0.0',
-      autoprefixer: '^11.0.0',
+      tailwindcss: '^3.4.0',
+      autoprefixer: '^10.4.0',
       postcss: '^8.4.49',
       eslint: '^9.16.0',
-      'eslint-config-next': '^16.0.0',
+      'eslint-config-next': '^15.0.0',
     },
   };
 
   await fs.writeJSON(path.join(frontendDir, 'package.json'), packageJson, { spaces: 2 });
+
+  await fs.writeJSON(path.join(frontendDir, '.eslintrc.json'), {
+    root: true,
+    extends: ["next/core-web-vitals"]
+  }, { spaces: 2 });
 
   // Next.js config
   const nextConfig = `/** @type {import('next').NextConfig} */
@@ -333,7 +347,7 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
-module.exports = nextConfig
+export default nextConfig
 `;
 
   await fs.writeFile(path.join(frontendDir, 'next.config.js'), nextConfig);
@@ -385,7 +399,7 @@ export default config
   await fs.writeFile(path.join(frontendDir, 'tailwind.config.ts'), tailwindConfig);
 
   // PostCSS config
-  const postcssConfig = `module.exports = {
+  const postcssConfig = `export default {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
@@ -468,7 +482,7 @@ body {
   const apiClient = `import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -545,7 +559,7 @@ export const config = {
   }
 
   // .env.local.example
-  const envExample = `NEXT_PUBLIC_API_URL=http://localhost:3000/api
+  const envExample = `NEXT_PUBLIC_API_URL=http://localhost:3001/api
 ${config.auth === 'clerk' ? 'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxxxx\nCLERK_SECRET_KEY=sk_test_xxxxx' : ''}
 ${config.auth === 'supabase' ? 'NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co\nNEXT_PUBLIC_SUPABASE_ANON_KEY=xxxxx' : ''}
 `;
@@ -554,39 +568,39 @@ ${config.auth === 'supabase' ? 'NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.
 
   // .gitignore
   const gitignore = `# dependencies
-/node_modules
-/.pnp
-.pnp.js
+  / node_modules
+  /.pnp
+    .pnp.js
 
 # testing
-/coverage
+  / coverage
 
 # next.js
-/.next/
-/out/
+  /.next /
+  /out/
 
 # production
-/build
+  / build
 
 # misc
-.DS_Store
-*.pem
+  .DS_Store
+  *.pem
 
 # debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+npm - debug.log *
+  yarn - debug.log *
+  yarn - error.log *
 
 # local env files
-.env*.local
+  .env *.local
 
 # vercel
-.vercel
+  .vercel
 
 # typescript
-*.tsbuildinfo
-next-env.d.ts
-`;
+  *.tsbuildinfo
+next - env.d.ts
+  `;
 
   await fs.writeFile(path.join(frontendDir, '.gitignore'), gitignore);
 }
@@ -617,8 +631,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang= "en" >
+    <body>{ children } </body>
     </html>
   )
 }
@@ -631,8 +645,8 @@ function getNextJSLoginPage(config: StackConfig): string {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <SignIn />
+    <div className= "min-h-screen flex items-center justify-center bg-gray-900" >
+    <SignIn />
     </div>
   )
 }
@@ -663,40 +677,41 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-3xl font-bold text-white mb-6">Login</h1>
-        {error && <div className="bg-red-500 text-white p-3 rounded mb-4">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-300 mb-2">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 rounded bg-gray-700 text-white"
-              required
-            />
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-300 mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 rounded bg-gray-700 text-white"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded"
-          >
-            Login
-          </button>
-        </form>
-      </div>
-    </div>
+    <div className= "min-h-screen flex items-center justify-center bg-gray-900" >
+    <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md" >
+      <h1 className="text-3xl font-bold text-white mb-6" > Login </h1>
+  { error && <div className="bg-red-500 text-white p-3 rounded mb-4" > { error } </div> }
+  <form onSubmit={ handleSubmit }>
+    <div className="mb-4" >
+      <label className="block text-gray-300 mb-2" > Email </label>
+        < input
+  type = "email"
+  value = { email }
+  onChange = {(e) => setEmail(e.target.value)
+}
+className = "w-full p-3 rounded bg-gray-700 text-white"
+required
+  />
+  </div>
+  < div className = "mb-6" >
+    <label className="block text-gray-300 mb-2" > Password </label>
+      < input
+type = "password"
+value = { password }
+onChange = {(e) => setPassword(e.target.value)}
+className = "w-full p-3 rounded bg-gray-700 text-white"
+required
+  />
+  </div>
+  < button
+type = "submit"
+className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded"
+  >
+  Login
+  </button>
+  </form>
+  </div>
+  </div>
   )
 }
 `;
@@ -716,18 +731,18 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <nav className="bg-gray-800 p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">${config.projectName}</h1>
-          <UserButton afterSignOutUrl="/" />
-        </div>
-      </nav>
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-4">Welcome, {user.firstName || user.emailAddresses[0].emailAddress}!</h2>
-        <p className="text-gray-400">You're logged in to your dashboard.</p>
-      </div>
-    </div>
+    <div className= "min-h-screen bg-gray-900 text-white" >
+    <nav className="bg-gray-800 p-4" >
+      <div className="container mx-auto flex justify-between items-center" >
+        <h1 className="text-2xl font-bold" > ${config.projectName} </h1>
+          < UserButton afterSignOutUrl = "/" />
+            </div>
+            </nav>
+            < div className = "container mx-auto px-4 py-16" >
+              <h2 className="text-3xl font-bold mb-4" > Welcome, { user.firstName || user.emailAddresses[0].emailAddress }! </h2>
+                < p className = "text-gray-400" > You&apos;re logged in to your dashboard.</p>
+                  </div>
+                  </div>
   )
 }
 `;
@@ -767,30 +782,30 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
-      </div>
+      <div className= "min-h-screen bg-gray-900 flex items-center justify-center" >
+      <div className="text-white" > Loading...</div>
+        </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <nav className="bg-gray-800 p-4">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold">${config.projectName}</h1>
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
-          >
-            Logout
-          </button>
-        </div>
-      </nav>
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold mb-4">Welcome, {user?.email}!</h2>
-        <p className="text-gray-400">You're logged in to your dashboard.</p>
-      </div>
+    <div className= "min-h-screen bg-gray-900 text-white" >
+    <nav className="bg-gray-800 p-4" >
+      <div className="container mx-auto flex justify-between items-center" >
+        <h1 className="text-2xl font-bold" > ${config.projectName} </h1>
+          < button
+  onClick = { handleLogout }
+  className = "bg-red-600 hover:bg-red-700 px-4 py-2 rounded"
+    >
+    Logout
+    </button>
     </div>
+    </nav>
+    < div className = "container mx-auto px-4 py-16" >
+      <h2 className="text-3xl font-bold mb-4" > Welcome, { user?.email }! </h2>
+        < p className = "text-gray-400" > You&apos;re logged in to your dashboard.</p>
+          </div>
+          </div>
   )
 }
 `;

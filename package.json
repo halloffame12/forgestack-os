@@ -1,6 +1,6 @@
 {
     "name": "forgestack-os",
-    "version": "0.1.1",
+    "version": "0.2.1",
     "private": true,
     "description": "One platform. Any stack. Production-ready.",
     "workspaces": [
@@ -9,10 +9,13 @@
     "scripts": {
         "dev:cli": "npm run dev --workspace=@forgestack/cli",
         "build": "npm run build --workspaces",
+        "lint": "npx eslint . --quiet",
         "test": "npm run test --workspaces"
     },
     "devDependencies": {
+        "@eslint/js": "^9.39.2",
         "typescript": "^5.3.3",
+        "typescript-eslint": "^8.52.0",
         "vite": "^6.0.0"
     },
     "keywords": [

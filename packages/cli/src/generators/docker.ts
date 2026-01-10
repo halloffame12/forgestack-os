@@ -50,7 +50,9 @@ RUN npm install --only=production
 COPY --from=builder /app/dist ./dist
 ${config.database !== 'mongodb' ? 'COPY --from=builder /app/prisma ./prisma\nRUN npx prisma generate' : ''}
 
-EXPOSE 3000
+USER node
+
+EXPOSE 3001
 
 CMD ["node", "dist/index.js"]
 `;
@@ -69,7 +71,7 @@ CMD ["node", "dist/index.js"]
     }
 
     location /api {
-        proxy_pass http://backend:3000;
+        proxy_pass http://backend:3001;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -116,17 +118,17 @@ services:
     depends_on:
       - backend
     environment:
-      - VITE_API_URL=http://localhost:3000/api
+      - VITE_API_URL=http://localhost:3001/api
 
   backend:
     build:
       context: ./backend
       dockerfile: ../docker/backend.Dockerfile
     ports:
-      - "3000:3000"
+      - "3001:3001"
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=3001
       - DATABASE_URL=${config.database === 'postgresql' ? `postgresql://postgres:postgres@postgres:5432/${config.projectName}` : config.database === 'mongodb' ? `mongodb://mongo:mongo@mongodb:27017/${config.projectName}` : config.database === 'mysql' ? `mysql://root:mysql@mysql:3306/${config.projectName}` : 'sqlite:./dev.db'}
       - JWT_SECRET=\${JWT_SECRET:-your-secret-key}
     depends_on:

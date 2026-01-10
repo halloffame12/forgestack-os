@@ -21,7 +21,8 @@ const OPTIONS = {
         { name: 'Clerk', status: 'available' },
         { name: 'JWT', status: 'available' },
         { name: 'Supabase Auth', status: 'available' },
-        { name: 'Auth.js', status: 'available' }
+        { name: 'Auth.js', status: 'available' },
+        { name: 'Firebase', status: 'available' }
     ],
     database: [
         { name: 'PostgreSQL', status: 'available' },
@@ -49,6 +50,7 @@ const StackSelector = () => {
         if (category === 'auth') {
             if (val === 'supabase auth') return 'supabase';
             if (val === 'auth.js') return 'authjs';
+            if (val === 'firebase') return 'firebase';
             return val;
         }
         return val.replace(' + ', '-');

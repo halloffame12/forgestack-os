@@ -29,7 +29,6 @@ async function generateExpress(config: StackConfig, backendDir: string) {
   const packageJson = {
     name: `${config.projectName}-backend`,
     version: '0.1.0',
-    type: 'module',
     scripts: {
       dev: 'tsx watch src/index.ts',
       build: 'tsc',
@@ -46,7 +45,7 @@ async function generateExpress(config: StackConfig, backendDir: string) {
       zod: '^3.24.1',
       ...(config.auth === 'jwt' && {
         jsonwebtoken: '^9.0.2',
-        bcrypt: '^5.1.1',
+        bcryptjs: '^2.4.3',
       }),
       ...(config.database.includes('prisma') || config.database === 'postgresql' || config.database === 'mysql' || config.database === 'sqlite' ? { '@prisma/client': '^6.2.0' } : {}),
       ...(config.database === 'mongodb' && { mongoose: '^8.9.0' }),
@@ -57,7 +56,7 @@ async function generateExpress(config: StackConfig, backendDir: string) {
       '@types/node': '^20.17.0',
       ...(config.auth === 'jwt' && {
         '@types/jsonwebtoken': '^9.0.7',
-        '@types/bcrypt': '^5.0.2',
+        '@types/bcryptjs': '^2.4.6',
       }),
       typescript: '^5.7.2',
       tsx: '^4.19.2',
@@ -67,20 +66,25 @@ async function generateExpress(config: StackConfig, backendDir: string) {
 
   await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
 
+  await fs.writeJSON(path.join(backendDir, '.eslintrc.json'), {
+    root: true,
+    extends: ["eslint:recommended"],
+    env: { node: true, es2021: true }
+  }, { spaces: 2 });
+
   // TypeScript config
   const tsConfig = {
     compilerOptions: {
-      target: 'ES2020',
-      module: 'ESNext',
-      lib: ['ES2020'],
-      outDir: './dist',
-      rootDir: './src',
-      strict: true,
+      target: 'ES2021',
+      module: 'CommonJS',
+      moduleResolution: 'node',
       esModuleInterop: true,
       skipLibCheck: true,
       forceConsistentCasingInFileNames: true,
       resolveJsonModule: true,
-      moduleResolution: 'bundle',
+      outDir: './dist',
+      rootDir: './src',
+      strict: true,
       incremental: true,
     },
     include: ['src/**/*'],
@@ -162,26 +166,26 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import healthRouter from './routes/health';
-import authRouter from './routes/auth';
+${config.auth === 'jwt' ? "import authRouter from './routes/auth';" : ''}
 import { errorHandler } from './middleware/errorHandler';
 ${config.multiTenant ? "import { tenantMiddleware } from './middleware/tenant';" : ''}
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
 }));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 1000, // increased for flexibility in dev
 });
 app.use('/api', limiter);
 
@@ -193,7 +197,7 @@ ${config.multiTenant ? '// Multi-tenant middleware\napp.use(tenantMiddleware);' 
 
 // Routes
 app.use('/api', healthRouter);
-app.use('/api/auth', authRouter);
+${config.auth === 'jwt' ? "app.use('/api/auth', authRouter);" : ''}
 
 // Error handling
 app.use(errorHandler);
@@ -222,15 +226,15 @@ export function tenantMiddleware(
 ) {
   try {
     const token = req.headers.authorization?.replace('Bearer ', '');
-    
+
     if (!token) {
       return next();
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || '${config.jwtSecret}') as any;
     req.tenantId = decoded.tenantId;
     req.userId = decoded.userId;
-    
+
     next();
   } catch (error) {
     next();
@@ -253,11 +257,11 @@ export function tenantMiddleware(
   // Clerk organization ID is used as tenant ID
   // Extract from Clerk session token
   const orgId = req.headers['x-clerk-org-id'] as string;
-  
+
   if (orgId) {
     req.tenantId = orgId;
   }
-  
+
   next();
 }
 `;
@@ -278,11 +282,11 @@ export function tenantMiddleware(
   // Extract tenant ID from request
   // Implementation depends on your auth provider
   const tenantId = req.headers['x-tenant-id'] as string;
-  
+
   if (tenantId) {
     req.tenantId = tenantId;
   }
-  
+
   next();
 }
 `;
@@ -293,7 +297,6 @@ async function generateFastify(config: StackConfig, backendDir: string) {
   const packageJson = {
     name: `${config.projectName}-backend`,
     version: '0.1.0',
-    type: 'module',
     scripts: {
       dev: 'tsx watch src/index.ts',
       build: 'tsc',
@@ -326,20 +329,25 @@ async function generateFastify(config: StackConfig, backendDir: string) {
 
   await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
 
+  await fs.writeJSON(path.join(backendDir, '.eslintrc.json'), {
+    root: true,
+    extends: ["eslint:recommended"],
+    env: { node: true, es2021: true }
+  }, { spaces: 2 });
+
   // TypeScript config (same as Express)
   const tsConfig = {
     compilerOptions: {
-      target: 'ES2020',
-      module: 'ESNext',
-      lib: ['ES2020'],
-      outDir: './dist',
-      rootDir: './src',
-      strict: true,
+      target: 'ES2021',
+      module: 'CommonJS',
+      moduleResolution: 'node',
       esModuleInterop: true,
       skipLibCheck: true,
       forceConsistentCasingInFileNames: true,
       resolveJsonModule: true,
-      moduleResolution: 'bundle',
+      outDir: './dist',
+      rootDir: './src',
+      strict: true,
       incremental: true,
     },
     include: ['src/**/*'],
@@ -361,7 +369,7 @@ import helmet from '@fastify/helmet';
 import rateLimit from '@fastify/rate-limit';
 import jwt from '@fastify/jwt';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.js';
+${config.auth === 'jwt' ? "import authRoutes from './routes/auth.js';" : ''}
 
 dotenv.config();
 
@@ -370,15 +378,15 @@ const fastify = Fastify({ logger: true });
 // Plugins
 fastify.register(helmet);
 fastify.register(cors, {
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
 });
 fastify.register(rateLimit, {
-  max: 100,
+  max: 1000,
   timeWindow: '15m',
 });
 fastify.register(jwt, {
-  secret: process.env.JWT_SECRET || 'secret',
+  secret: process.env.JWT_SECRET || '${config.jwtSecret}',
 });
 
 // Routes
@@ -386,12 +394,12 @@ fastify.get('/api/health', async () => {
   return { status: 'ok', service: '${config.projectName}-backend' };
 });
 
-fastify.register(authRoutes, { prefix: '/api/auth' });
+${config.auth === 'jwt' ? "fastify.register(authRoutes, { prefix: '/api/auth' });" : ''}
 
 // Start
 const start = async () => {
   try {
-    await fastify.listen({ port: Number(process.env.PORT) || 3000, host: '0.0.0.0' });
+    await fastify.listen({ port: Number(process.env.PORT) || 3001, host: '0.0.0.0' });
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
@@ -420,13 +428,13 @@ async function generateNestJS(config: StackConfig, backendDir: string) {
       lint: 'eslint "{src,apps,libs,test}/**/*.ts" --fix',
     },
     dependencies: {
-      '@nestjs/common': '^11.1.0',
-      '@nestjs/core': '^11.1.0',
-      '@nestjs/platform-express': '^11.1.0',
-      '@nestjs/config': '^4.0.0',
-      '@nestjs/jwt': '^11.0.0',
-      '@nestjs/passport': '^11.0.0',
-      '@nestjs/swagger': '^8.1.0',
+      '@nestjs/common': '^10.4.0',
+      '@nestjs/core': '^10.4.0',
+      '@nestjs/platform-express': '^10.4.0',
+      '@nestjs/config': '^3.3.0',
+      '@nestjs/jwt': '^10.2.0',
+      '@nestjs/passport': '^10.0.0',
+      '@nestjs/swagger': '^7.4.0',
       'passport': '^0.7.0',
       'passport-jwt': '^4.0.1',
       'bcrypt': '^5.1.1',
@@ -438,9 +446,9 @@ async function generateNestJS(config: StackConfig, backendDir: string) {
       ...(config.database !== 'mongodb' && { '@prisma/client': '^6.2.0' }),
     },
     devDependencies: {
-      '@nestjs/cli': '^11.0.0',
-      '@nestjs/schematics': '^11.0.0',
-      '@nestjs/testing': '^11.1.0',
+      '@nestjs/cli': '^10.4.0',
+      '@nestjs/schematics': '^10.1.0',
+      '@nestjs/testing': '^10.4.0',
       '@types/express': '^5.0.0',
       '@types/node': '^20.17.0',
       '@types/passport-jwt': '^4.0.1',
@@ -455,6 +463,12 @@ async function generateNestJS(config: StackConfig, backendDir: string) {
   };
 
   await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
+
+  await fs.writeJSON(path.join(backendDir, '.eslintrc.json'), {
+    root: true,
+    extends: ["eslint:recommended"],
+    env: { node: true, es2021: true }
+  }, { spaces: 2 });
 
   // NestJS CLI config
   const nestCliJson = {
@@ -478,6 +492,8 @@ async function generateNestJS(config: StackConfig, backendDir: string) {
       experimentalDecorators: true,
       allowSyntheticDefaultImports: true,
       target: 'ES2021',
+      moduleResolution: 'node',
+      resolveJsonModule: true,
       sourceMap: true,
       outDir: './dist',
       baseUrl: './',
@@ -515,10 +531,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
-  
+
   const config = new DocumentBuilder()
     .setTitle('${config.projectName} API')
     .setDescription('Generated by ForgeStack OS')
@@ -527,8 +543,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
-  
-  await app.listen(process.env.PORT || 3000);
+
+  await app.listen(process.env.PORT || 3001);
   console.log(\`Application is running on: \${await app.getUrl()}\`);
 }
 bootstrap();
@@ -562,12 +578,12 @@ export class AppModule {}
 
   // Configuration
   const configFile = `export default () => ({
-  port: parseInt(process.env.PORT, 10) || 3000,
+  port: parseInt(process.env.PORT || '3001', 10),
   database: {
     url: process.env.DATABASE_URL,
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'your-secret-key',
+    secret: process.env.JWT_SECRET || '${config.jwtSecret}',
     expiresIn: '7d',
   },
 });
@@ -603,6 +619,10 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
   }
+
+  async onModuleDestroy() {
+    await this.$disconnect();
+  }
 }
 `;
     await fs.writeFile(path.join(srcDir, 'database', 'prisma.service.ts'), prismaService);
@@ -627,12 +647,12 @@ import { IsEmail, IsString, MinLength } from 'class-validator';
 export class LoginDto {
   @ApiProperty()
   @IsEmail()
-  email: string;
+  email!: string;
 
   @ApiProperty()
   @IsString()
   @MinLength(6)
-  password: string;
+  password!: string;
 }
 `;
 
@@ -644,12 +664,12 @@ import { IsEmail, IsString, MinLength } from 'class-validator';
 export class RegisterDto {
   @ApiProperty()
   @IsEmail()
-  email: string;
+  email!: string;
 
   @ApiProperty()
   @IsString()
   @MinLength(6)
-  password: string;
+  password!: string;
 
   @ApiProperty({ required: false })
   @IsString()
@@ -818,9 +838,9 @@ export class TenantInterceptor implements NestInterceptor {
   }
 
   // .env.example
-  const envExample = `PORT=3000
+  const envExample = `PORT=3001
 DATABASE_URL=${config.database === 'mongodb' ? 'mongodb://localhost:27017/myapp' : 'postgresql://user:password@localhost:5432/myapp'}
-JWT_SECRET=your-secret-key-change-in-production
+JWT_SECRET=${config.jwtSecret}
 `;
 
   await fs.writeFile(path.join(backendDir, '.env.example'), envExample);
@@ -877,22 +897,29 @@ async function generateBunElysia(config: StackConfig, backendDir: string) {
     version: '0.1.0',
     scripts: {
       dev: 'bun dev',
+      build: 'echo "Bun build not required"',
       start: 'bun src/index.ts',
     },
     dependencies: {
       elysia: '^1.0.0',
       '@elysiajs/cors': '^1.0.0',
       '@elysiajs/jwt': '^1.0.0',
-      ...(config.database === 'postgresql' && { '@prisma/client': '^5.8.1' }),
+      ...(config.database === 'postgresql' && { '@prisma/client': '^6.2.1' }),
       ...(config.database === 'mongodb' && { mongoose: '^8.1.0' }),
     },
     devDependencies: {
       bun: 'latest',
-      ...(config.database !== 'mongodb' && { prisma: '^5.8.1' }),
+      ...(config.database !== 'mongodb' && { prisma: '^6.2.1' }),
     },
   };
 
   await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
+
+  await fs.writeJSON(path.join(backendDir, '.eslintrc.json'), {
+    root: true,
+    extends: ["eslint:recommended"],
+    env: { node: true, es2021: true }
+  }, { spaces: 2 });
 
   const srcDir = path.join(backendDir, 'src');
   await fs.ensureDir(srcDir);
@@ -906,14 +933,14 @@ const app = new Elysia()
   .use(
     jwt({
       name: 'jwt',
-      secret: process.env.JWT_SECRET || 'secret'
+      secret: process.env.JWT_SECRET || '${config.jwtSecret}'
     })
   )
   .get('/api/health', () => ({ 
     status: 'ok', 
     service: '${config.projectName}-backend' 
   }))
-  .listen(process.env.PORT || 3000);
+  .listen(process.env.PORT || 3001);
 
 console.log(\`🚀 Bun + Elysia running at \${app.server?.hostname}:\${app.server?.port}\`);
 `;

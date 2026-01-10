@@ -305,7 +305,7 @@ function generateEnvExample(config: StackConfig): string {
 DATABASE_URL="${getDatabaseUrl(config)}"
 
 # Server
-PORT=3000
+PORT=3001
 NODE_ENV=development
 
 `;
@@ -314,7 +314,7 @@ NODE_ENV=development
     switch (config.auth) {
         case 'jwt':
             env += `# JWT Authentication
-JWT_SECRET=your-super-secret-jwt-key-change-this
+JWT_SECRET=${config.jwtSecret}
 JWT_EXPIRES_IN=7d
 `;
             break;

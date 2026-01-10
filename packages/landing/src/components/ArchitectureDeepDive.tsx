@@ -55,8 +55,8 @@ const ArchitectureDeepDive = () => {
                                 <div className="grid grid-cols-2 gap-8 w-full max-w-md">
                                     <div className="p-6 rounded-xl bg-purple-500/10 border border-purple-500/30 flex flex-col items-center text-center">
                                         <Server className="text-purple-400 mb-3" size={24} />
-                                        <span className="font-bold text-sm">Control Plane</span>
-                                        <span className="text-xs text-white/40 mt-1">Orchestration</span>
+                                        <span className="font-bold text-sm">Generator Core</span>
+                                        <span className="text-xs text-white/40 mt-1">Project Orchestration</span>
                                     </div>
                                     <div className="p-6 rounded-xl bg-green-500/10 border border-green-500/30 flex flex-col items-center text-center">
                                         <Layers className="text-green-400 mb-3" size={24} />
@@ -141,7 +141,7 @@ const ArchitectureDeepDive = () => {
                                         and NoSQL patterns with equal first-class citizenship.
                                     </p>
                                     <ul className="space-y-2 list-disc list-inside text-white/50 text-sm">
-                                        <li>Prisma / Drizzle ORM pre-configured</li>
+                                        <li>Prisma ORM pre-configured</li>
                                         <li>Automatic migration generation</li>
                                         <li>Seeding scripts included</li>
                                     </ul>

@@ -7,6 +7,9 @@ export interface StackConfig {
     apiStyle: 'rest' | 'graphql' | 'trpc';
     docker: boolean;
     multiTenant: boolean;
+    jwtSecret?: string;
+    skipInstall?: boolean;
+    skipGit?: boolean;
 }
 
 export interface ValidationResult {

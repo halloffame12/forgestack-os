@@ -3,29 +3,29 @@ import fs from 'fs-extra';
 import { StackConfig } from '../types';
 
 export async function generateGraphQL(config: StackConfig, backendDir: string) {
-    if (config.backend === 'express') {
-        await generateExpressGraphQL(config, backendDir);
-    } else if (config.backend === 'nestjs') {
-        await generateNestJSGraphQL(config, backendDir);
-    }
+  if (config.backend === 'express') {
+    await generateExpressGraphQL(config, backendDir);
+  } else if (config.backend === 'nestjs') {
+    await generateNestJSGraphQL(config, backendDir);
+  }
 }
 
 async function generateExpressGraphQL(config: StackConfig, backendDir: string) {
-    // Update package.json
-    const packageJson = await fs.readJSON(path.join(backendDir, 'package.json'));
-    packageJson.dependencies['graphql'] = '^16.8.1';
-    packageJson.dependencies['@apollo/server'] = '^4.10.0';
-    packageJson.dependencies['@graphql-tools/schema'] = '^10.0.2';
-    await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
+  // Update package.json
+  const packageJson = await fs.readJSON(path.join(backendDir, 'package.json'));
+  packageJson.dependencies['graphql'] = '^16.8.1';
+  packageJson.dependencies['@apollo/server'] = '^4.10.0';
+  packageJson.dependencies['@graphql-tools/schema'] = '^10.0.2';
+  await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
 
-    // Create GraphQL directory
-    const graphqlDir = path.join(backendDir, 'src', 'graphql');
-    await fs.ensureDir(graphqlDir);
-    await fs.ensureDir(path.join(graphqlDir, 'resolvers'));
-    await fs.ensureDir(path.join(graphqlDir, 'types'));
+  // Create GraphQL directory
+  const graphqlDir = path.join(backendDir, 'src', 'graphql');
+  await fs.ensureDir(graphqlDir);
+  await fs.ensureDir(path.join(graphqlDir, 'resolvers'));
+  await fs.ensureDir(path.join(graphqlDir, 'types'));
 
-    // Schema
-    const schema = `import { gql } from 'graphql-tag';
+  // Schema
+  const schema = `import { gql } from 'graphql-tag';
 
 export const typeDefs = gql\`
   type User {
@@ -51,10 +51,10 @@ export const typeDefs = gql\`
   }
 \`;
 `;
-    await fs.writeFile(path.join(graphqlDir, 'schema.ts'), schema);
+  await fs.writeFile(path.join(graphqlDir, 'schema.ts'), schema);
 
-    // Resolvers
-    const resolvers = `import bcrypt from 'bcrypt';
+  // Resolvers
+  const resolvers = `import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 ${config.database === 'mongodb' ? "import User from '../models/User';" : "import prisma from '../lib/prisma';"}
 
@@ -134,10 +134,10 @@ export const resolvers = {
   },
 };
 `;
-    await fs.writeFile(path.join(graphqlDir, 'resolvers', 'index.ts'), resolvers);
+  await fs.writeFile(path.join(graphqlDir, 'resolvers', 'index.ts'), resolvers);
 
-    // Apollo Server setup
-    const apolloSetup = `import { ApolloServer } from '@apollo/server';
+  // Apollo Server setup
+  const apolloSetup = `import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
@@ -169,20 +169,20 @@ export async function createApolloServer() {
   });
 }
 `;
-    await fs.writeFile(path.join(graphqlDir, 'server.ts'), apolloSetup);
+  await fs.writeFile(path.join(graphqlDir, 'server.ts'), apolloSetup);
 }
 
 async function generateNestJSGraphQL(config: StackConfig, backendDir: string) {
-    // Update package.json
-    const packageJson = await fs.readJSON(path.join(backendDir, 'package.json'));
-    packageJson.dependencies['@nestjs/graphql'] = '^12.0.11';
-    packageJson.dependencies['@nestjs/apollo'] = '^12.0.11';
-    packageJson.dependencies['@apollo/server'] = '^4.10.0';
-    packageJson.dependencies['graphql'] = '^16.8.1';
-    await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
+  // Update package.json
+  const packageJson = await fs.readJSON(path.join(backendDir, 'package.json'));
+  packageJson.dependencies['@nestjs/graphql'] = '^12.0.11';
+  packageJson.dependencies['@nestjs/apollo'] = '^12.0.11';
+  packageJson.dependencies['@apollo/server'] = '^4.10.0';
+  packageJson.dependencies['graphql'] = '^16.8.1';
+  await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
 
-    // GraphQL module
-    const graphqlModule = `import { Module } from '@nestjs/common';
+  // GraphQL module
+  const graphqlModule = `import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
@@ -200,10 +200,10 @@ import { join } from 'path';
 })
 export class GraphqlModule {}
 `;
-    await fs.writeFile(path.join(backendDir, 'src', 'graphql.module.ts'), graphqlModule);
+  await fs.writeFile(path.join(backendDir, 'src', 'graphql.module.ts'), graphqlModule);
 
-    // User resolver
-    const userResolver = `import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+  // User resolver
+  const userResolver = `import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { UsersService } from './users/users.service';
@@ -240,22 +240,30 @@ export class UserResolver {
   }
 }
 `;
-    await fs.writeFile(path.join(backendDir, 'src', 'users', 'users.resolver.ts'), userResolver);
+  await fs.writeFile(path.join(backendDir, 'src', 'users', 'users.resolver.ts'), userResolver);
 }
 
 export async function generateTRPC(config: StackConfig, backendDir: string, frontendDir: string) {
-    // Backend setup
-    const packageJson = await fs.readJSON(path.join(backendDir, 'package.json'));
-    packageJson.dependencies['@trpc/server'] = '^10.45.0';
-    packageJson.dependencies['zod'] = '^3.22.4';
-    await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
+  // Backend setup
+  const packageJson = await fs.readJSON(path.join(backendDir, 'package.json'));
+  packageJson.dependencies['@trpc/server'] = '^10.45.0';
+  packageJson.dependencies['zod'] = '^3.22.4';
 
-    // tRPC router
-    const trpcDir = path.join(backendDir, 'src', 'trpc');
-    await fs.ensureDir(trpcDir);
-    await fs.ensureDir(path.join(trpcDir, 'routers'));
+  // Add auth dependencies - tRPC auth router always uses bcryptjs/jwt
+  packageJson.dependencies['bcryptjs'] = '^2.4.3';
+  packageJson.dependencies['jsonwebtoken'] = '^9.0.2';
+  if (!packageJson.devDependencies) packageJson.devDependencies = {};
+  packageJson.devDependencies['@types/bcryptjs'] = '^2.4.6';
+  packageJson.devDependencies['@types/jsonwebtoken'] = '^9.0.7';
 
-    const trpcSetup = `import { initTRPC } from '@trpc/server';
+  await fs.writeJSON(path.join(backendDir, 'package.json'), packageJson, { spaces: 2 });
+
+  // tRPC router
+  const trpcDir = path.join(backendDir, 'src', 'trpc');
+  await fs.ensureDir(trpcDir);
+  await fs.ensureDir(path.join(trpcDir, 'routers'));
+
+  const trpcSetup = `import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 
 const t = initTRPC.create();
@@ -263,11 +271,11 @@ const t = initTRPC.create();
 export const router = t.router;
 export const publicProcedure = t.procedure;
 `;
-    await fs.writeFile(path.join(trpcDir, 'trpc.ts'), trpcSetup);
+  await fs.writeFile(path.join(trpcDir, 'trpc.ts'), trpcSetup);
 
-    const authRouter = `import { router, publicProcedure } from '../trpc';
+  const authRouter = `import { router, publicProcedure } from '../trpc.js';
 import { z } from 'zod';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 ${config.database === 'mongodb' ? "import User from '../../models/User';" : "import prisma from '../../lib/prisma';"}
 
@@ -335,19 +343,24 @@ export const authRouter = router({
     }),
 });
 `;
-    await fs.writeFile(path.join(trpcDir, 'routers', 'auth.ts'), authRouter);
+  await fs.writeFile(path.join(trpcDir, 'routers', 'auth.ts'), authRouter);
 
-    // Frontend tRPC client
-    const frontendPackageJson = await fs.readJSON(path.join(frontendDir, 'package.json'));
-    frontendPackageJson.dependencies['@trpc/client'] = '^10.45.0';
-    frontendPackageJson.dependencies['@trpc/react-query'] = '^10.45.0';
-    frontendPackageJson.dependencies['@tanstack/react-query'] = '^5.17.19';
-    await fs.writeJSON(path.join(frontendDir, 'package.json'), frontendPackageJson, { spaces: 2 });
+  // Frontend tRPC client
+  const frontendPackageJson = await fs.readJSON(path.join(frontendDir, 'package.json'));
+  frontendPackageJson.dependencies['@trpc/client'] = '^10.45.0';
+  frontendPackageJson.dependencies['@trpc/react-query'] = '^10.45.0';
+  frontendPackageJson.dependencies['@tanstack/react-query'] = '^4.36.1';
+  await fs.writeJSON(path.join(frontendDir, 'package.json'), frontendPackageJson, { spaces: 2 });
 
-    const trpcClient = `import { createTRPCReact } from '@trpc/react-query';
-import type { AppRouter } from '../../../backend/src/trpc/routers';
+  const isNext = config.frontend === 'nextjs';
+  const frontendLibDir = path.join(frontendDir, isNext ? 'lib' : 'src/lib');
+  await fs.ensureDir(frontendLibDir);
+
+  const relativePath = isNext ? '../../backend/src/trpc/routers' : '../../../backend/src/trpc/routers';
+  const trpcClient = `import { createTRPCReact } from '@trpc/react-query';
+import type { AppRouter } from '${relativePath}';
 
 export const trpc = createTRPCReact<AppRouter>();
 `;
-    await fs.writeFile(path.join(frontendDir, 'src', 'lib', 'trpc.ts'), trpcClient);
+  await fs.writeFile(path.join(frontendLibDir, 'trpc.ts'), trpcClient);
 }

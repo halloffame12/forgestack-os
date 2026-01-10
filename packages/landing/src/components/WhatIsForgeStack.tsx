@@ -48,14 +48,14 @@ const WhatIsForgeStack = () => {
                                     <ArrowRight className="text-white/30" size={24} />
                                 </div>
 
-                                {/* Platform API */}
+                                {/* CLI Generator */}
                                 <div className="flex items-center space-x-4">
                                     <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center shrink-0">
                                         <Server className="text-purple-400" size={24} />
                                     </div>
                                     <div className="flex-1">
-                                        <h4 className="font-bold text-white">Platform API</h4>
-                                        <p className="text-sm text-white/50">Control plane</p>
+                                        <h4 className="font-bold text-white">CLI Generator</h4>
+                                        <p className="text-sm text-white/50">Core engine</p>
                                     </div>
                                 </div>
 
@@ -112,10 +112,10 @@ const WhatIsForgeStack = () => {
                         {/* Desktop: Expandable sections, Mobile: Accordion */}
                         <div className="hidden md:block space-y-4">
                             <div className="glass rounded-xl p-6">
-                                <h4 className="font-bold mb-2 text-blue-400">Control Plane vs Data Plane</h4>
+                                <h4 className="font-bold mb-2 text-blue-400">CLI-Driven Architecture</h4>
                                 <p className="text-white/60 text-sm leading-relaxed">
-                                    The Control Plane manages your application's infrastructure and configuration,
-                                    while the Data Plane handles your actual business logic and user data.
+                                    The generator core manages your application's infrastructure and configuration,
+                                    while the generated code handles your actual business logic and user data.
                                     This separation ensures scalability and maintainability.
                                 </p>
                             </div>
@@ -143,11 +143,11 @@ const WhatIsForgeStack = () => {
                             <Accordion type="single" collapsible className="glass rounded-xl px-4">
                                 <AccordionItem value="item-1">
                                     <AccordionTrigger className="text-blue-400">
-                                        Control Plane vs Data Plane
+                                        CLI-Driven Architecture
                                     </AccordionTrigger>
                                     <AccordionContent>
-                                        The Control Plane manages your application's infrastructure and configuration,
-                                        while the Data Plane handles your actual business logic and user data.
+                                        The generator core manages your application's infrastructure and configuration,
+                                        while the generated code handles your actual business logic and user data.
                                         This separation ensures scalability and maintainability.
                                     </AccordionContent>
                                 </AccordionItem>
