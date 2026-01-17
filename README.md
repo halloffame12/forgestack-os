@@ -340,12 +340,27 @@ forgestack create --help
 
 ## 📖 Documentation
 
-- **[Getting Started](./docs/guide/getting-started.md)** - Installation and first project
+### Getting Started
+- **[Quick Start Guide](./docs/guide/getting-started.md)** - Installation and first project
+- **[Development Quick Start](./docs/DEVELOPMENT.md)** - Set up your development environment
+
+### User Guides
 - **[Stack Guide](./docs/stacks/)** - Detailed stack documentation
 - **[Multi-Tenancy](./docs/features/multi-tenancy.md)** - Multi-tenant architecture
 - **[Deployment](./docs/deployment/)** - Deploy to production
+- **[Environment Configuration](./docs/ENVIRONMENT_GUIDE.md)** - Manage environment variables and Zod validation
+- **[Upgrading Projects](./docs/UPGRADE_GUIDE.md)** - Safely upgrade generated projects with migrations
+
+### Advanced Topics
+- **[Architecture Overview](./docs/ARCHITECTURE.md)** - Complete system design and components
+- **[Plugin Development](./docs/PLUGIN_DEVELOPMENT.md)** - Build plugins to extend ForgeStack
+- **[Local AI Setup](./docs/AI_SETUP.md)** - Use local LLMs for code generation and analysis
+- **[Feature Roadmap](./docs/FEATURES_ROADMAP.md)** - See what's coming in v0.4.0 → v1.0.0
+
+### Reference
 - **[API Reference](./docs/cli/)** - CLI commands and options
-- **[Contributing](./CONTRIBUTING.md)** - How to contribute
+- **[CHANGELOG](./CHANGELOG.md)** - Version history and release notes
+- **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute
 
 ---
 
