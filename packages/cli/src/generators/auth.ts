@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { StackConfig } from '../types';
+import { StackConfig } from '../types.js';
 
 export async function generateAuth(
   config: StackConfig,
@@ -128,7 +128,7 @@ export default router;
 `;
 }
 
-function getFastifyAuthRoutes(config: StackConfig): string {
+function getFastifyAuthRoutes(_config: StackConfig): string {
   return `import { FastifyInstance } from 'fastify';
 import bcrypt from 'bcrypt';
 
@@ -143,7 +143,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
 `;
 }
 
-async function generateNestJSAuth(config: StackConfig, backendDir: string) {
+async function generateNestJSAuth(_config: StackConfig, backendDir: string) {
   const authDir = path.join(backendDir, 'src', 'auth');
   await fs.ensureDir(authDir);
   await fs.ensureDir(path.join(authDir, 'dto'));

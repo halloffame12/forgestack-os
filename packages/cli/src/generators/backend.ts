@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { StackConfig } from '../types';
+import { StackConfig } from '../types.js';
 
 export async function generateBackend(config: StackConfig, backendDir: string) {
   switch (config.backend) {

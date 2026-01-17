@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { StackConfig } from '../types';
+import { StackConfig } from '../types.js';
 
 export async function generateGraphQL(config: StackConfig, backendDir: string) {
   if (config.backend === 'express') {

@@ -1,5 +1,40 @@
+import fs from 'fs-extra';
 import inquirer from 'inquirer';
-import { StackConfig } from '../types';
+import os from 'os';
+import path from 'path';
+import { StackConfig } from '../types.js';
+
+const PRESETS: Record<string, Omit<StackConfig, 'projectName'>> = {
+    'next-nest-clerk-pg': {
+        frontend: 'nextjs',
+        backend: 'nestjs',
+        auth: 'clerk',
+        database: 'postgresql',
+        apiStyle: 'rest',
+        docker: true,
+        multiTenant: true,
+    },
+    'react-express-jwt-mongo': {
+        frontend: 'react-vite',
+        backend: 'express',
+        auth: 'jwt',
+        database: 'mongodb',
+        apiStyle: 'graphql',
+        docker: true,
+        multiTenant: false,
+    },
+    'next-fastify-supabase-trpc': {
+        frontend: 'nextjs',
+        backend: 'fastify',
+        auth: 'supabase',
+        database: 'supabase-db',
+        apiStyle: 'trpc',
+        docker: true,
+        multiTenant: true,
+    },
+};
+
+const LAST_CONFIG_PATH = path.join(os.homedir(), '.forgestack', 'config.json');
 
 /**
  * Normalizes input strings for consistency (e.g., 'Next.js 14' -> 'nextjs')
@@ -60,25 +95,89 @@ function normalizeInput(category: 'frontend' | 'backend' | 'auth' | 'database', 
     return mappings[category][v] || v;
 }
 
-export async function promptForStack(projectName: string, options: Record<string, any> = {}): Promise<StackConfig> {
-    console.log('\n');
+async function loadLastConfig(): Promise<Partial<StackConfig>> {
+    try {
+        const raw = await fs.readJSON(LAST_CONFIG_PATH);
+        return raw.lastStack || {};
+    } catch {
+        return {};
+    }
+}
 
-    // If flags are provided, normalize and return immediately for non-interactive mode
-    if (options.frontend || options.backend || options.auth || options.database) {
-        return {
-            projectName,
-            frontend: normalizeInput('frontend', options.frontend || 'react-vite'),
-            backend: normalizeInput('backend', options.backend || 'express'),
-            auth: normalizeInput('auth', options.auth || 'jwt'),
-            database: normalizeInput('database', options.database || 'postgresql'),
-            apiStyle: options.api // 'api' option maps to 'apiStyle' in config
-                ? (options.api === 'trpc' ? 'trpc' : options.api === 'graphql' ? 'graphql' : 'rest')
-                : 'rest',
-            docker: options.docker !== false, // Default to true unless --no-docker
-            multiTenant: !!options.multiTenant,
-            skipInstall: !!options.skipInstall,
-            skipGit: !!options.skipGit,
-        } as StackConfig;
+async function saveLastConfig(config: StackConfig) {
+    try {
+        await fs.ensureDir(path.dirname(LAST_CONFIG_PATH));
+        await fs.writeJSON(LAST_CONFIG_PATH, { lastStack: config }, { spaces: 2 });
+    } catch {
+        // non-blocking persistence
+    }
+}
+
+function parseApiStyle(api?: string): 'rest' | 'graphql' | 'trpc' {
+    if (api === 'trpc') return 'trpc';
+    if (api === 'graphql') return 'graphql';
+    return 'rest';
+}
+
+type CLIOptions = {
+    frontend?: string;
+    backend?: string;
+    auth?: string;
+    database?: string;
+    api?: string;
+    preset?: string;
+    stack?: string;
+    docker?: boolean;
+    multiTenant?: boolean;
+    skipInstall?: boolean;
+    skipGit?: boolean;
+};
+
+function buildConfigFromOptions(projectName: string, options: CLIOptions, last: Partial<StackConfig>): StackConfig {
+    let base: Partial<StackConfig> = {};
+
+    if (options.preset) {
+        const preset = PRESETS[options.preset];
+        if (!preset) {
+            throw new Error(`Unknown preset "${options.preset}". Available: ${Object.keys(PRESETS).join(', ')}`);
+        }
+        base = { ...preset };
+    }
+
+    if (options.stack) {
+        try {
+            const parsed = JSON.parse(options.stack);
+            base = { ...base, ...parsed };
+        } catch {
+            throw new Error('Failed to parse --stack JSON. Ensure it is valid JSON.');
+        }
+    }
+
+    const merged: StackConfig = {
+        projectName,
+        frontend: normalizeInput('frontend', options.frontend || base.frontend || last.frontend || 'react-vite') as StackConfig['frontend'],
+        backend: normalizeInput('backend', options.backend || base.backend || last.backend || 'express') as StackConfig['backend'],
+        auth: normalizeInput('auth', options.auth || base.auth || last.auth || 'jwt') as StackConfig['auth'],
+        database: normalizeInput('database', options.database || base.database || last.database || 'postgresql') as StackConfig['database'],
+        apiStyle: parseApiStyle(options.api || base.apiStyle || last.apiStyle),
+        docker: options.docker !== undefined ? Boolean(options.docker) : (base.docker ?? last.docker ?? true),
+        multiTenant: options.multiTenant !== undefined ? Boolean(options.multiTenant) : (base.multiTenant ?? last.multiTenant ?? false),
+        skipInstall: Boolean(options.skipInstall),
+        skipGit: Boolean(options.skipGit),
+    };
+
+    return merged;
+}
+
+export async function promptForStack(projectName: string, options: CLIOptions = {}): Promise<StackConfig> {
+    console.log('\n');
+    const lastConfig = await loadLastConfig();
+
+    // Non-interactive: use flags, preset, or stack JSON
+    if (options.frontend || options.backend || options.auth || options.database || options.preset || options.stack) {
+        const config = buildConfigFromOptions(projectName, options, lastConfig);
+        await saveLastConfig(config);
+        return config;
     }
 
     const answers = await inquirer.prompt([
@@ -92,7 +191,7 @@ export async function promptForStack(projectName: string, options: Record<string
                 { name: 'Vue + Vite', value: 'vue-vite', disabled: 'Coming in Phase 5' },
                 { name: 'SvelteKit', value: 'sveltekit', disabled: 'Coming in Phase 5' },
             ],
-            default: 'react-vite',
+            default: lastConfig.frontend || 'react-vite',
         },
         {
             type: 'list',
@@ -105,7 +204,7 @@ export async function promptForStack(projectName: string, options: Record<string
                 { name: 'Bun + Elysia', value: 'bun-elysia' },
                 { name: 'Go + Fiber (Experimental)', value: 'go-fiber', disabled: 'Coming in Phase 6' },
             ],
-            default: 'express',
+            default: lastConfig.backend || 'express',
         },
         {
             type: 'list',
@@ -118,7 +217,7 @@ export async function promptForStack(projectName: string, options: Record<string
                 { name: 'Auth.js (NextAuth)', value: 'authjs' },
                 { name: 'Firebase Auth', value: 'firebase' },
             ],
-            default: 'jwt',
+            default: lastConfig.auth || 'jwt',
         },
         {
             type: 'list',
@@ -131,7 +230,7 @@ export async function promptForStack(projectName: string, options: Record<string
                 { name: 'SQLite (Local)', value: 'sqlite' },
                 { name: 'Supabase DB', value: 'supabase-db' },
             ],
-            default: 'postgresql',
+            default: lastConfig.database || 'postgresql',
         },
         {
             type: 'list',
@@ -142,24 +241,27 @@ export async function promptForStack(projectName: string, options: Record<string
                 { name: 'GraphQL', value: 'graphql' },
                 { name: 'tRPC (Type-safe)', value: 'trpc' },
             ],
-            default: 'rest',
+            default: lastConfig.apiStyle || 'rest',
         },
         {
             type: 'confirm',
             name: 'docker',
             message: 'Include Docker configuration?',
-            default: true,
+            default: lastConfig.docker ?? true,
         },
         {
             type: 'confirm',
             name: 'multiTenant',
             message: 'Enable multi-tenancy support?',
-            default: false,
+            default: lastConfig.multiTenant ?? false,
         },
     ]);
 
-    return {
+    const config: StackConfig = {
         projectName,
         ...answers,
     };
+
+    await saveLastConfig(config);
+    return config;
 }

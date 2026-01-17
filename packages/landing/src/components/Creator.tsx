@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Github, Linkedin, ExternalLink } from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 
 const Creator = () => {
     return (
@@ -56,7 +56,7 @@ const Creator = () => {
                                     {[
                                         { icon: <Github size={20} />, label: 'GitHub', href: 'https://github.com/halloffame12' },
                                         { icon: <Linkedin size={20} />, label: 'LinkedIn', href: 'https://www.linkedin.com/in/sumit-chauhan-a4ba98325/' },
-                                    ].map((social, i) => (
+                                    ].map((social) => (
                                         <motion.a
                                             key={social.label}
                                             whileHover={{ y: -2, backgroundColor: 'rgba(255,255,255,0.1)' }}

@@ -1,17 +1,21 @@
 import path from 'path';
 import fs from 'fs-extra';
 import chalk from 'chalk';
-import { logger } from '../utils/logger';
-import { promptForStack } from '../utils/prompts';
-import { validateStackConfig } from '../utils/validators';
-import { generateProject } from '../generators';
+import { createRequire } from 'module';
+import { logger } from '../utils/logger.js';
+import { promptForStack } from '../utils/prompts.js';
+import { validateStackConfig } from '../utils/validators.js';
+import { generateProject } from '../generators/index.js';
+
+const pkgRequire = createRequire(import.meta.url);
+const { version: CLI_VERSION } = pkgRequire('../../package.json') as { version: string };
 
 export async function createCommand(projectName: string, options: Record<string, unknown>) {
     try {
         // Display welcome banner
         console.log(chalk.bold.cyan('\n╔═══════════════════════════════════════╗'));
         console.log(chalk.bold.cyan('║                                       ║'));
-        console.log(chalk.bold.cyan('║        🚀 ForgeStack OS v0.2.1       ║'));
+        console.log(chalk.bold.cyan(`║        🚀 ForgeStack OS v${CLI_VERSION}       ║`));
         console.log(chalk.bold.cyan('║                                       ║'));
         console.log(chalk.bold.cyan('║  One platform. Any stack. Production. ║'));
         console.log(chalk.bold.cyan('║                                       ║'));
@@ -44,12 +48,12 @@ export async function createCommand(projectName: string, options: Record<string,
 
         if (validation.warnings.length > 0) {
             console.log('');
-            validation.warnings.forEach(warning => logger.warning(warning));
+            validation.warnings.forEach((warning: string) => logger.warning(warning));
         }
 
         if (!validation.valid) {
             console.log('');
-            validation.errors.forEach(error => logger.error(error));
+            validation.errors.forEach((error: string) => logger.error(error));
             process.exit(1);
         }
 

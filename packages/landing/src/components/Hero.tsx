@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Github, Play, ArrowRight, ChevronRight, Check } from 'lucide-react';
+import { Github, ArrowRight, ChevronRight, Check } from 'lucide-react';
 import AnimatedTerminal from './AnimatedTerminal';
 import { Button } from './ui/button';
 
@@ -23,7 +23,7 @@ const Hero = () => {
                                 <Github className="mr-2 w-3.5 h-3.5 fill-current" />
                                 Star on GitHub
                                 <span className="mx-2 h-3 w-[1px] bg-white/20"></span>
-                                <span className="font-mono text-yellow-500/80">v0.2.5</span>
+                                <span className="font-mono text-yellow-500/80">v0.3.3</span>
                                 <ChevronRight className="ml-1 w-3 h-3 group-hover:translate-x-0.5 transition-transform text-white/40" />
                             </a>
 

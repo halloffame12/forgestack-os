@@ -1,15 +1,15 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { StackConfig } from '../types';
-import { logger } from '../utils/logger';
-import { generateFrontend } from './frontend';
-import { generateBackend } from './backend';
-import { generateDatabase } from './database';
-import { generateAuth } from './auth';
-import { generateDocker } from './docker';
-import { generateCommon } from './common';
-import { generateTRPC, generateGraphQL } from './api';
-import { generateRandomSecret } from '../utils/security';
+import { StackConfig } from '../types.js';
+import { logger } from '../utils/logger.js';
+import { generateFrontend } from './frontend.js';
+import { generateBackend } from './backend.js';
+import { generateDatabase } from './database.js';
+import { generateAuth } from './auth.js';
+import { generateDocker } from './docker.js';
+import { generateCommon } from './common.js';
+import { generateTRPC, generateGraphQL } from './api.js';
+import { generateRandomSecret } from '../utils/security.js';
 import execa from 'execa';
 
 export async function generateProject(config: StackConfig, targetDir: string) {

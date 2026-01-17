@@ -1,6 +1,7 @@
 {
     "name": "forgestack-os",
-    "version": "0.2.1",
+    "version": "0.3.0",
+    "type": "module",
     "private": true,
     "description": "One platform. Any stack. Production-ready.",
     "workspaces": [
@@ -32,6 +33,10 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/halloffame12/forgestack-os"
-    }
+        "url": "git+https://github.com/halloffame12/forgestack-os.git"
+    },
+    "bugs": {
+        "url": "https://github.com/halloffame12/forgestack-os/issues"
+    },
+    "homepage": "https://github.com/halloffame12/forgestack-os#readme"
 }

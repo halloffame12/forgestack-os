@@ -1,8 +1,17 @@
 {
     "name": "forgestack-os-cli",
-    "version": "0.3.0",
+    "version": "0.3.3",
     "description": "ForgeStack OS CLI - Generate production-ready full-stack SaaS applications",
     "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "type": "module",
     "bin": {
         "forgestack": "./dist/index.js"
     },
@@ -14,8 +23,10 @@
     "scripts": {
         "dev": "tsx watch src/index.ts",
         "build": "tsc",
-        "test": "vitest",
-        "lint": "eslint src --ext .ts"
+        "test": "vitest run",
+        "lint": "eslint src --ext .ts",
+        "prepare": "npm run build",
+        "prepublishOnly": "npm run lint && npm run test && npm run build"
     },
     "keywords": [
         "cli",
@@ -28,6 +39,17 @@
         "url": "https://github.com/halloffame12"
     },
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/halloffame12/forgestack-os.git"
+    },
+    "bugs": {
+        "url": "https://github.com/halloffame12/forgestack-os/issues"
+    },
+    "homepage": "https://github.com/halloffame12/forgestack-os#readme",
+    "engines": {
+        "node": ">=20"
+    },
     "dependencies": {
         "chalk": "^4.1.2",
         "commander": "^13.0.0",

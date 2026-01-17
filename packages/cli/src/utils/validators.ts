@@ -1,4 +1,4 @@
-import { StackConfig, ValidationResult } from '../types';
+import { StackConfig, ValidationResult } from '../types.js';
 import validateNpmPackageName from 'validate-npm-package-name';
 
 export function validateStackConfig(config: StackConfig): ValidationResult {
@@ -9,6 +9,11 @@ export function validateStackConfig(config: StackConfig): ValidationResult {
     const nameValidation = validateNpmPackageName(config.projectName);
     if (!nameValidation.validForNewPackages) {
         errors.push(`Invalid project name: ${nameValidation.errors?.join(', ')}`);
+    }
+
+    // Next.js pairs best with NestJS for SSR/edge features
+    if (config.frontend === 'nextjs' && config.backend === 'express') {
+        errors.push('Next.js works best with NestJS backend');
     }
 
     // tRPC requires TypeScript backend

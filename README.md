@@ -3,7 +3,7 @@
 <div align="center">
 
 ![ForgeStack OS](https://img.shields.io/badge/ForgeStack-OS-blue?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-0.2.5-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-0.3.3-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=for-the-badge&logo=typescript)
 ![Node](https://img.shields.io/badge/Node-20+-green?style=for-the-badge&logo=node.js)
@@ -48,6 +48,7 @@ npm run dev
 ```
 
 **That's it!** You now have a production-ready full-stack application with:
+
 - ✅ Complete authentication flow
 - ✅ Multi-tenancy support
 - ✅ Database integration
@@ -60,18 +61,21 @@ npm run dev
 ## ✨ Features
 
 ### 🎯 **Local-First**
+
 - Works 100% offline
 - No account required
 - No vendor lock-in
 - Your code, your machine
 
 ### 🔧 **Any Stack Combination**
+
 - **150+ valid combinations**
 - Mix and match frameworks
 - Choose your preferred tools
 - Production-tested stacks
 
 ### � **Production-Ready**
+
 - Not just boilerplate
 - Complete authentication
 - Multi-tenancy built-in
@@ -80,6 +84,7 @@ npm run dev
 - Environment management
 
 ### 💎 **Developer Experience**
+
 - Full TypeScript support
 - Auto-generated API docs
 - Hot reload in development
@@ -91,12 +96,14 @@ npm run dev
 ## � Supported Stacks
 
 ### Frontend
+
 - ✅ **React + Vite** - Fast, modern React development
 - ✅ **Next.js 14** - App Router, Server Components, SSR
 - 🔜 **Vue + Vite** - Progressive JavaScript framework
 - 🔜 **SvelteKit** - Cybernetically enhanced web apps
 
 ### Backend
+
 - ✅ **Express** - Fast, unopinionated Node.js framework
 - ✅ **NestJS** - Enterprise-grade, modular architecture
 - ✅ **Fastify** - High-performance Node.js framework
@@ -104,6 +111,7 @@ npm run dev
 - 🔜 **Go + Fiber** - High-performance Go framework
 
 ### Authentication
+
 - ✅ **JWT** - Built-in token-based authentication
 - ✅ **Clerk** - Complete user management (recommended for SaaS)
 - ✅ **Supabase Auth** - Open-source Firebase alternative
@@ -111,17 +119,20 @@ npm run dev
 - ✅ **Firebase Auth** - Google's authentication service
 
 ### Database
+
 - ✅ **PostgreSQL** - Powerful relational database (Prisma ORM)
 - ✅ **MongoDB** - Flexible document database (Mongoose ODM)
 - ✅ **MySQL** - Popular relational database (Prisma ORM)
 - ✅ **SQLite** - Lightweight embedded database (Prisma ORM)
 
 ### API Styles
+
 - ✅ **REST** - Traditional RESTful APIs
 - ✅ **GraphQL** - Query language for APIs (Apollo Server)
 - ✅ **tRPC** - End-to-end type-safe APIs
 
 ### Infrastructure
+
 - ✅ **Docker** - Containerization with Docker Compose
 - ✅ **Multi-Tenancy** - Built-in tenant isolation
 
@@ -144,6 +155,7 @@ npx forgestack-os-cli create my-enterprise-app
 ```
 
 **Generated files**: 52 production-ready files including:
+
 - Next.js App Router with server components
 - NestJS modules, controllers, services
 - Clerk authentication integration
@@ -166,6 +178,7 @@ npx forgestack-os-cli create my-startup-app
 ```
 
 **Generated files**: 45 production-ready files including:
+
 - React + Vite with TailwindCSS
 - Express with Apollo Server
 - JWT authentication middleware
@@ -187,6 +200,7 @@ npx forgestack-os-cli create my-modern-app
 ```
 
 **Generated files**: 50+ production-ready files with:
+
 - Full type-safety end-to-end
 - Supabase authentication
 - tRPC procedures with Zod validation
@@ -257,24 +271,28 @@ my-app/
 ## 🎯 Use Cases
 
 ### SaaS Applications
+
 - Multi-tenant architecture built-in
 - Organization/team management
 - Subscription handling ready
 - User authentication complete
 
 ### Internal Tools
+
 - Admin dashboards
 - Data management systems
 - Analytics platforms
 - Monitoring tools
 
 ### MVPs & Prototypes
+
 - Rapid development
 - Production-ready from day one
 - Easy to extend
 - No technical debt
 
 ### Learning Projects
+
 - Modern stack examples
 - Best practices implemented
 - Well-structured code
@@ -285,6 +303,7 @@ my-app/
 ## 🔧 CLI Commands
 
 ### Create Project
+
 ```bash
 forgestack create <project-name> [options]
 
@@ -301,6 +320,7 @@ Options:
 ```
 
 ### Examples
+
 ```bash
 # Interactive mode (recommended)
 forgestack create my-app
@@ -334,12 +354,14 @@ forgestack create --help
 ### Quick Deploy
 
 **Vercel (Frontend)**:
+
 ```bash
 cd frontend
 vercel --prod
 ```
 
 **Render (Backend)**:
+
 ```bash
 cd backend
 # Connect GitHub repo to Render
@@ -347,6 +369,7 @@ cd backend
 ```
 
 **Docker (Full Stack)**:
+
 ```bash
 docker-compose up -d
 ```
@@ -360,6 +383,7 @@ See [SETUP.md](./SETUP.md) for detailed deployment instructions.
 We welcome contributions! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 ### Development Setup
+
 ```bash
 # Clone repository
 git clone https://github.com/halloffame12/forgestack-os.git
@@ -394,6 +418,7 @@ npm link
 ## 🗺️ Roadmap
 
 ### Phase 1 ✅ (Complete)
+
 - React + Vite frontend
 - Express backend
 - JWT authentication
@@ -401,6 +426,7 @@ npm link
 - Docker configuration
 
 ### Phase 2 ✅ (Complete)
+
 - Next.js 14 App Router
 - NestJS backend
 - Clerk & Supabase auth
@@ -408,6 +434,7 @@ npm link
 - Automated tests
 
 ### Phase 3 ✅ (Complete)
+
 - Fastify backend support
 - Bun + Elysia backend support
 - Auth.js & Firebase Auth integration
@@ -415,15 +442,18 @@ npm link
 - Cross-platform CLI hardening
 
 ### Phase 4 ✅ (Complete)
+
 - Landing page
 - Documentation site
 - Deployment guides
 
 ### Phase 5 🔜 (Planned)
+
 - Vue + Vite frontend
 - SvelteKit frontend
 
 ### Phase 6 🔜 (Future)
+
 - Go + Fiber backend
 - Rust + Actix backend
 - AI-powered code generation

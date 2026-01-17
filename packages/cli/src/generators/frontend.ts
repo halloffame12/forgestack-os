@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { StackConfig } from '../types';
+import { StackConfig } from '../types.js';
 
 export async function generateFrontend(config: StackConfig, frontendDir: string) {
   // For Phase 1 MVP, we'll create a basic React + Vite template

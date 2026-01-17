@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { StackConfig } from '../types';
+import { StackConfig } from '../types.js';
 
 export async function generateCommon(config: StackConfig, targetDir: string) {
     // Generate root package.json
@@ -176,6 +176,31 @@ ${getTenantScopingInfo(config)}
 All database queries include tenant isolation to ensure data security.
 ` : ''}
 
+## Environment Variables
+
+| Key | Description | Example |
+| --- | --- | --- |
+| DATABASE_URL | Connection string for your database | ${getDatabaseUrl(config)} |
+| PORT | Backend HTTP port | 3001 |
+| NODE_ENV | Runtime environment | development |
+${getAuthEnvRows(config)}
+
+## Runbook
+
+1. Install dependencies: 
+    - \`npm install\`
+2. Copy env file: 
+    - \`cp .env.example .env\`
+3. Migrate database (if applicable):
+    - PostgreSQL/MySQL/SQLite: \`cd backend && npx prisma migrate dev\`
+    - MongoDB: no migrations required
+4. Start dev servers: 
+    - \`npm run dev\` (runs frontend and backend together)
+5. Build for production: 
+    - \`npm run build\`
+6. Run tests: 
+    - \`npm test\` (workspace-aware)
+
 ## Built With
 
 - [ForgeStack OS](https://github.com/halloffame12/forgestack-os) - The meta-platform that generated this project
@@ -297,6 +322,23 @@ function getTenantScopingInfo(config: StackConfig): string {
             return '- JWT token contains tenant_id claim\n- Middleware extracts and validates tenant context';
         default:
             return '- Authentication provider includes tenant information\n- Middleware enforces tenant isolation';
+    }
+}
+
+function getAuthEnvRows(config: StackConfig): string {
+    switch (config.auth) {
+        case 'jwt':
+            return '| JWT_SECRET | Secret used to sign JWTs | change-me-please |\n| JWT_EXPIRES_IN | Token lifetime | 7d |\n';
+        case 'clerk':
+            return '| CLERK_PUBLISHABLE_KEY | Clerk publishable key | pk_test_xxxxx |\n| CLERK_SECRET_KEY | Clerk secret key | sk_test_xxxxx |\n';
+        case 'supabase':
+            return '| SUPABASE_URL | Supabase project URL | https://xxxxx.supabase.co |\n| SUPABASE_ANON_KEY | Public anon key | xxxxx |\n| SUPABASE_SERVICE_ROLE_KEY | Service role key | xxxxx |\n';
+        case 'authjs':
+            return '| NEXTAUTH_URL | Auth.js URL | http://localhost:3000 |\n| NEXTAUTH_SECRET | Auth.js secret | change-me-please |\n';
+        case 'firebase':
+            return '| FIREBASE_API_KEY | Firebase API key | xxxxx |\n| FIREBASE_PROJECT_ID | Firebase project id | your-project |\n';
+        default:
+            return '';
     }
 }
 

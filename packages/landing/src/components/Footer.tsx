@@ -1,5 +1,4 @@
-import { motion } from 'framer-motion';
-import { Code2, Github, Youtube, BookOpen, Layers, ArrowUp, Mail } from 'lucide-react';
+import { Github, BookOpen, Layers, ArrowUp, Mail } from 'lucide-react';
 
 const Footer = () => {
     const scrollToTop = () => {
