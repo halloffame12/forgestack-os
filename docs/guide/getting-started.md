@@ -22,7 +22,7 @@ Alternatively, if you prefer global installation:
 
 ```bash
 npm install -g forgestack-os-cli
-forgestack create my-awesome-app
+forgestack-os-cli create my-awesome-app
 ```
 
 ## 🛠️ Creating Your First Project

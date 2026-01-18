@@ -7,6 +7,7 @@ Learn how ForgeStack OS manages environment variables, configuration, and multi-
 ## Overview
 
 ForgeStack OS provides:
+
 - **Zod-based validation** for type-safe environment configuration
 - **Multi-environment support** (.env, .env.local, .env.production, etc.)
 - **Automatic schema generation** based on usage
@@ -21,21 +22,23 @@ ForgeStack OS provides:
 
 ```typescript
 // src/env.ts
-import { z } from 'zod';
+import { z } from "zod";
 
 const envSchema = z.object({
   // App
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
   PORT: z.coerce.number().default(3000),
-  
+
   // Database
   DATABASE_URL: z.string().url(),
   DATABASE_LOG: z.boolean().default(false),
-  
+
   // Auth
   JWT_SECRET: z.string().min(32),
   SESSION_SECRET: z.string().min(32),
-  
+
   // API Keys (optional for local dev)
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_PUBLISHABLE_KEY: z.string().optional(),
@@ -45,15 +48,15 @@ export type Env = z.infer<typeof envSchema>;
 
 export function validateEnv(): Env {
   const result = envSchema.safeParse(process.env);
-  
+
   if (!result.success) {
-    console.error('❌ Invalid environment configuration:');
-    result.error.issues.forEach(issue => {
-      console.error(`  ${issue.path.join('.')}: ${issue.message}`);
+    console.error("❌ Invalid environment configuration:");
+    result.error.issues.forEach((issue) => {
+      console.error(`  ${issue.path.join(".")}: ${issue.message}`);
     });
     process.exit(1);
   }
-  
+
   return result.data;
 }
 
@@ -74,7 +77,7 @@ SESSION_SECRET=another-secret-key-at-least-32-characters
 ### 3. Use in Application
 
 ```typescript
-import { env } from '@/env';
+import { env } from "@/env";
 
 const app = express();
 
@@ -196,66 +199,73 @@ POSTHOG_API_KEY=your-posthog-api-key
 ### Basic Schema
 
 ```typescript
-import { z } from 'zod';
+import { z } from "zod";
 
 export const envSchema = z.object({
   // String with format validation
-  DATABASE_URL: z.string().url('Must be a valid URL'),
-  
+  DATABASE_URL: z.string().url("Must be a valid URL"),
+
   // Number with coercion
   PORT: z.coerce.number().int().min(1).max(65535),
-  
+
   // Enum
-  NODE_ENV: z.enum(['development', 'production', 'test']),
-  
+  NODE_ENV: z.enum(["development", "production", "test"]),
+
   // Boolean with coercion
-  DEBUG: z.coerce.boolean().default('false'),
-  
+  DEBUG: z.coerce.boolean().default("false"),
+
   // Optional fields
   API_KEY: z.string().optional(),
-  
+
   // With defaults
-  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
-  
+  LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
+
   // Complex validation
-  JWT_SECRET: z.string()
-    .min(32, 'JWT_SECRET must be at least 32 characters')
+  JWT_SECRET: z
+    .string()
+    .min(32, "JWT_SECRET must be at least 32 characters")
     .max(256)
-    .regex(/^[A-Za-z0-9_-]+$/, 'JWT_SECRET must only contain alphanumeric, underscore, and dash'),
+    .regex(
+      /^[A-Za-z0-9_-]+$/,
+      "JWT_SECRET must only contain alphanumeric, underscore, and dash"
+    ),
 });
 ```
 
 ### Conditional Validation
 
 ```typescript
-export const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production']),
-  DATABASE_URL: z.string().url(),
-  STRIPE_SECRET_KEY: z.string().optional(),
-}).refine(
-  (env) => {
-    // In production, Stripe must be configured
-    if (env.NODE_ENV === 'production' && !env.STRIPE_SECRET_KEY) {
-      return false;
+export const envSchema = z
+  .object({
+    NODE_ENV: z.enum(["development", "production"]),
+    DATABASE_URL: z.string().url(),
+    STRIPE_SECRET_KEY: z.string().optional(),
+  })
+  .refine(
+    (env) => {
+      // In production, Stripe must be configured
+      if (env.NODE_ENV === "production" && !env.STRIPE_SECRET_KEY) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: "STRIPE_SECRET_KEY is required in production",
+      path: ["STRIPE_SECRET_KEY"],
     }
-    return true;
-  },
-  {
-    message: 'STRIPE_SECRET_KEY is required in production',
-    path: ['STRIPE_SECRET_KEY'],
-  }
-);
+  );
 ```
 
 ### Custom Validation
 
 ```typescript
 const customEnvSchema = envSchema.extend({
-  POSTGRES_PASSWORD: z.string()
-    .min(12, 'Database password must be at least 12 characters')
+  POSTGRES_PASSWORD: z
+    .string()
+    .min(12, "Database password must be at least 12 characters")
     .refine(
       (pwd) => /[A-Z]/.test(pwd) && /[0-9]/.test(pwd),
-      'Password must contain uppercase and numbers'
+      "Password must contain uppercase and numbers"
     ),
 });
 ```
@@ -268,12 +278,12 @@ const customEnvSchema = envSchema.extend({
 
 ```typescript
 // src/env.ts
-import dotenv from 'dotenv';
-import path from 'path';
+import dotenv from "dotenv";
+import path from "path";
 
 // Load from .env and .env.local
-dotenv.config({ path: path.join(process.cwd(), '.env') });
-dotenv.config({ path: path.join(process.cwd(), '.env.local') });
+dotenv.config({ path: path.join(process.cwd(), ".env") });
+dotenv.config({ path: path.join(process.cwd(), ".env.local") });
 
 export const env = validateEnv();
 ```
@@ -300,10 +310,10 @@ services:
 export default defineConfig({
   test: {
     env: {
-      NODE_ENV: 'test',
-      DATABASE_URL: 'postgresql://localhost/test_db',
-      JWT_SECRET: 'test-secret-minimum-32-chars!',
-      SESSION_SECRET: 'test-session-minimum-32-chars',
+      NODE_ENV: "test",
+      DATABASE_URL: "postgresql://localhost/test_db",
+      JWT_SECRET: "test-secret-minimum-32-chars!",
+      SESSION_SECRET: "test-session-minimum-32-chars",
     },
   },
 });
@@ -333,7 +343,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
 
 ```typescript
 // frontend/src/api/client.ts
-import { env } from '@/env';
+import { env } from "@/env";
 
 export const api = axios.create({
   baseURL: env.VITE_API_URL,
@@ -431,14 +441,14 @@ JWT_SECRET: z.string().min(32),
 
 ```typescript
 // 1. Don't read process.env directly
-const port = process.env.PORT;  // ❌ No validation
+const port = process.env.PORT; // ❌ No validation
 
 // 2. Don't allow invalid values to propagate
-const jwtSecret = process.env.JWT_SECRET || 'short';  // ❌ Bad default
+const jwtSecret = process.env.JWT_SECRET || "short"; // ❌ Bad default
 
 // 3. Don't validate inside functions
 function createServer() {
-  const port = z.coerce.number().parse(process.env.PORT);  // ❌ Do at startup
+  const port = z.coerce.number().parse(process.env.PORT); // ❌ Do at startup
 }
 ```
 
@@ -478,12 +488,12 @@ jobs:
 
 ```typescript
 // src/env.ts
-import { getSecret } from '@hashicorp/vault-api';
+import { getSecret } from "@hashicorp/vault-api";
 
 async function loadSecrets() {
-  const jwtSecret = process.env.JWT_SECRET ||
-    await getSecret('secret/jwt_secret');
-  
+  const jwtSecret =
+    process.env.JWT_SECRET || (await getSecret("secret/jwt_secret"));
+
   return {
     JWT_SECRET: jwtSecret,
     // ...
@@ -499,8 +509,8 @@ async function loadSecrets() {
 
 ```typescript
 const env = z.object({
-  FEATURE_NEW_UI: z.coerce.boolean().default('false'),
-  FEATURE_BETA_API: z.coerce.boolean().default('false'),
+  FEATURE_NEW_UI: z.coerce.boolean().default("false"),
+  FEATURE_BETA_API: z.coerce.boolean().default("false"),
 });
 
 if (env.FEATURE_NEW_UI) {
@@ -512,8 +522,8 @@ if (env.FEATURE_NEW_UI) {
 
 ```typescript
 const env = z.object({
-  RATE_LIMIT_REQUESTS: z.coerce.number().default('100'),
-  RATE_LIMIT_WINDOW: z.coerce.number().default('60'),  // seconds
+  RATE_LIMIT_REQUESTS: z.coerce.number().default("100"),
+  RATE_LIMIT_WINDOW: z.coerce.number().default("60"), // seconds
 });
 
 limiter = rateLimit({
@@ -526,8 +536,8 @@ limiter = rateLimit({
 
 ```typescript
 const env = z.object({
-  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']).default('info'),
-  LOG_FORMAT: z.enum(['json', 'pretty']).default('pretty'),
+  LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
+  LOG_FORMAT: z.enum(["json", "pretty"]).default("pretty"),
 });
 
 logger.level = env.LOG_LEVEL;
@@ -559,6 +569,7 @@ node -e "require('dotenv').config(); console.log(process.env.DATABASE_URL)"
 ```
 
 Solutions:
+
 1. Check `.env` and `.env.local` files
 2. Ensure values meet validation requirements
 3. Run `node -e "console.log(process.env)"` to debug

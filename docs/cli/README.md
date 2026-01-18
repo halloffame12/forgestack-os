@@ -31,15 +31,22 @@ npx forgestack-os-cli create my-app [options]
 Display help information for any command.
 
 ```bash
-forgestack --help
-forgestack create --help
+npx forgestack-os-cli --help
+npx forgestack-os-cli create --help
+
+# Or if installed globally:
+forgestack-os-cli --help
+forgestack-os-cli create --help
 ```
 
 ### `--version`
 Display the current version of the CLI.
 
 ```bash
-forgestack --version
+npx forgestack-os-cli --version
+
+# Or if installed globally:
+forgestack-os-cli --version
 ```
 
 ---
@@ -47,12 +54,12 @@ forgestack --version
 ## 💡 Pro Tips
 
 ### Interactive Mode
-If you run `forgestack create my-app` without any flags, it will start an interactive prompt session which is the recommended way for beginners.
+If you run `npx forgestack-os-cli create my-app` without any flags, it will start an interactive prompt session which is the recommended way for beginners.
 
 ### Flag Shortcuts
 You can combine flags for rapid generation in CI/CD environments:
 ```bash
-forgestack create ci-test --frontend=nextjs --backend=nestjs --auth=clerk --skip-install --skip-git
+npx forgestack-os-cli create ci-test --frontend=nextjs --backend=nestjs --auth=clerk --skip-install --skip-git
 ```
 
 ### Auto-Normalization

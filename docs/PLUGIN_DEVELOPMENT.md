@@ -19,17 +19,17 @@ npm install forgestack-os-plugin-sdk@latest
 
 ```typescript
 // ~/.forgestack/plugins/my-plugin/index.ts
-import { Plugin } from 'forgestack-os-plugin-sdk';
+import { Plugin } from "forgestack-os-plugin-sdk";
 
 export default {
-  name: 'my-plugin',
-  version: '1.0.0',
-  description: 'My custom plugin',
-  
+  name: "my-plugin",
+  version: "1.0.0",
+  description: "My custom plugin",
+
   hooks: {
     async afterGenerate(ctx) {
-      console.log('✨ Custom setup complete!');
-      ctx.addFile('custom-file.ts', 'export const custom = true;');
+      console.log("✨ Custom setup complete!");
+      ctx.addFile("custom-file.ts", "export const custom = true;");
     },
   },
 } as Plugin;
@@ -95,7 +95,7 @@ interface Plugin {
 
   // Configuration
   config?: PluginConfig;
-  
+
   // Hooks (all optional)
   hooks?: {
     beforeGenerate?: (ctx: GenerateContext) => Promise<void>;
@@ -105,7 +105,7 @@ interface Plugin {
   };
 
   // File management
-  files?: Record<string, string>;      // Files to add
+  files?: Record<string, string>; // Files to add
   patches?: {
     json?: JsonPatch[];
     code?: CodePatch[];
@@ -136,13 +136,13 @@ interface GenerateContext {
   // Current state
   manifest: FileManifest;
   files: Map<string, string>;
-  
+
   // Operations
   addFile(path: string, content: string): void;
   removeFile(path: string): void;
   patchFile(path: string, patch: Patch): void;
   addEnv(key: string, value: string): void;
-  
+
   // Utilities
   log(message: string): void;
   warn(message: string): void;
@@ -200,21 +200,21 @@ interface InstallContext extends GenerateContext {
 
 ```typescript
 // ~/.forgestack/plugins/payments-stripe/index.ts
-import { Plugin, GenerateContext } from 'forgestack-os-plugin-sdk';
+import { Plugin, GenerateContext } from "forgestack-os-plugin-sdk";
 
 export default {
-  name: 'payments-stripe',
-  version: '1.0.0',
-  description: 'Add Stripe payment processing',
-  
+  name: "payments-stripe",
+  version: "1.0.0",
+  description: "Add Stripe payment processing",
+
   config: {
     schema: {
-      type: 'object',
+      type: "object",
       properties: {
         apiVersion: {
-          type: 'string',
-          default: 'v1',
-          description: 'Stripe API version',
+          type: "string",
+          default: "v1",
+          description: "Stripe API version",
         },
       },
     },
@@ -223,15 +223,15 @@ export default {
   env: {
     STRIPE_PUBLISHABLE_KEY: {
       required: false,
-      description: 'Stripe publishable key for browser',
+      description: "Stripe publishable key for browser",
     },
     STRIPE_SECRET_KEY: {
       required: false,
-      description: 'Stripe secret key (keep private)',
+      description: "Stripe secret key (keep private)",
     },
     STRIPE_WEBHOOK_SECRET: {
       required: false,
-      description: 'Webhook endpoint secret',
+      description: "Webhook endpoint secret",
     },
   },
 
@@ -239,7 +239,7 @@ export default {
     async afterGenerate(ctx: GenerateContext) {
       // Add Stripe files
       ctx.addFile(
-        'src/lib/stripe.ts',
+        "src/lib/stripe.ts",
         `import Stripe from 'stripe';
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -250,7 +250,7 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
       // Add payment API routes
       ctx.addFile(
-        'src/routes/payments.ts',
+        "src/routes/payments.ts",
         `import { Router } from 'express';
 import { stripe } from '@/lib/stripe';
 
@@ -273,7 +273,7 @@ export default router;
 
       // Add types
       ctx.addFile(
-        'src/types/stripe.ts',
+        "src/types/stripe.ts",
         `export interface PaymentIntent {
   id: string;
   clientSecret: string;
@@ -285,23 +285,23 @@ export default router;
       );
 
       // Patch backend main file
-      ctx.patchFile('src/index.ts', {
-        type: 'code',
+      ctx.patchFile("src/index.ts", {
+        type: "code",
         pattern: "import { createServer } from 'http';",
         replacement: `import { createServer } from 'http';
 import paymentsRouter from './routes/payments';`,
       });
 
-      ctx.patchFile('src/index.ts', {
-        type: 'code',
-        pattern: 'app.use(routes)',
+      ctx.patchFile("src/index.ts", {
+        type: "code",
+        pattern: "app.use(routes)",
         replacement: `app.use('/api/payments', paymentsRouter);
 app.use(routes)`,
       });
 
       // Add frontend hook
       ctx.addFile(
-        'frontend/src/hooks/useStripe.ts',
+        "frontend/src/hooks/useStripe.ts",
         `import { loadStripe } from '@stripe/js';
 import { useMemo } from 'react';
 
@@ -315,17 +315,17 @@ export function useStripe() {
 `
       );
 
-      ctx.log('💳 Stripe integration added!');
+      ctx.log("💳 Stripe integration added!");
     },
 
     async beforeInstall(ctx) {
       // Install Stripe dependencies
-      await ctx.installDependency('stripe', 'latest');
-      await ctx.installDependency('@stripe/js', 'latest');
+      await ctx.installDependency("stripe", "latest");
+      await ctx.installDependency("@stripe/js", "latest");
     },
 
     async afterInstall(ctx) {
-      ctx.log('📚 Stripe docs: https://stripe.com/docs');
+      ctx.log("📚 Stripe docs: https://stripe.com/docs");
     },
   },
 } as Plugin;
@@ -339,18 +339,18 @@ export function useStripe() {
 
 ```typescript
 // Patch tsconfig.json
-ctx.patchFile('tsconfig.json', {
-  type: 'json',
+ctx.patchFile("tsconfig.json", {
+  type: "json",
   operations: [
     {
-      op: 'add',
-      path: '/compilerOptions/strictNullChecks',
+      op: "add",
+      path: "/compilerOptions/strictNullChecks",
       value: true,
     },
     {
-      op: 'add',
-      path: '/include/-',
-      value: 'stripe-config.ts',
+      op: "add",
+      path: "/include/-",
+      value: "stripe-config.ts",
     },
   ],
 });
@@ -360,17 +360,17 @@ ctx.patchFile('tsconfig.json', {
 
 ```typescript
 // Add import
-ctx.patchFile('src/index.ts', {
-  type: 'code',
+ctx.patchFile("src/index.ts", {
+  type: "code",
   pattern: "import { express } from 'express';",
   replacement: `import { express } from 'express';
 import { setupStripe } from '@/lib/stripe';`,
 });
 
 // Add function call
-ctx.patchFile('src/index.ts', {
-  type: 'code',
-  pattern: 'app.listen(port)',
+ctx.patchFile("src/index.ts", {
+  type: "code",
+  pattern: "app.listen(port)",
   replacement: `setupStripe(app);
 app.listen(port)`,
 });
@@ -380,15 +380,15 @@ app.listen(port)`,
 
 ```typescript
 // Patch docker-compose.yml
-ctx.patchFile('docker-compose.yml', {
-  type: 'yaml',
+ctx.patchFile("docker-compose.yml", {
+  type: "yaml",
   operations: [
     {
-      op: 'add',
-      path: '/services/stripe-webhook',
+      op: "add",
+      path: "/services/stripe-webhook",
       value: {
-        image: 'stripe/stripe-cli:latest',
-        command: ['listen', '--api-key', '${STRIPE_SECRET_KEY}'],
+        image: "stripe/stripe-cli:latest",
+        command: ["listen", "--api-key", "${STRIPE_SECRET_KEY}"],
       },
     },
   ],
@@ -411,18 +411,18 @@ Define schema in plugin:
 
 ```typescript
 export default {
-  name: 'payments-stripe',
-  
+  name: "payments-stripe",
+
   config: {
     schema: z.object({
-      apiVersion: z.enum(['v1', 'v2']).default('v1'),
-      webhookVersion: z.enum(['v1', 'v2']).default('v1'),
+      apiVersion: z.enum(["v1", "v2"]).default("v1"),
+      webhookVersion: z.enum(["v1", "v2"]).default("v1"),
     }),
-    
+
     async validate(config) {
       // Custom validation logic
-      if (config.apiVersion === 'v2') {
-        console.warn('v2 is experimental');
+      if (config.apiVersion === "v2") {
+        console.warn("v2 is experimental");
       }
     },
   },
@@ -434,22 +434,27 @@ export default {
 ## Built-in Plugins
 
 ### payments-stripe
+
 - Stripe payment integration
 - Payment intents, webhooks, customer portal
 
 ### analytics-posthog
+
 - PostHog analytics setup
 - Event tracking, feature flags
 
 ### monitoring-sentry
+
 - Sentry error tracking
 - Release tracking, performance monitoring
 
 ### email-resend
+
 - Resend email service integration
 - Email templates, sending
 
 ### observability-datadog
+
 - Datadog integration
 - Metrics, logs, APM
 
@@ -497,18 +502,18 @@ forgestack plugin search @forgestack/plugin-*
 
 ```typescript
 // tests/plugin.test.ts
-import { describe, it, expect } from 'vitest';
-import plugin from '../index';
+import { describe, it, expect } from "vitest";
+import plugin from "../index";
 
-describe('Payments Stripe Plugin', () => {
-  it('should add Stripe files', async () => {
+describe("Payments Stripe Plugin", () => {
+  it("should add Stripe files", async () => {
     const ctx = createMockContext();
     await plugin.hooks?.afterGenerate?.(ctx);
-    
-    expect(ctx.fileAdded('src/lib/stripe.ts')).toBe(true);
+
+    expect(ctx.fileAdded("src/lib/stripe.ts")).toBe(true);
   });
 
-  it('should add environment variables', () => {
+  it("should add environment variables", () => {
     expect(plugin.env?.STRIPE_SECRET_KEY).toBeDefined();
   });
 });
@@ -528,6 +533,7 @@ npm test
 ## Plugin Best Practices
 
 ✅ **Do**:
+
 - Make plugins focused and single-purpose
 - Document all environment variables
 - Provide example configuration
@@ -537,6 +543,7 @@ npm test
 - Handle optional dependencies gracefully
 
 ❌ **Don't**:
+
 - Call external APIs during generation
 - Require paid services without opt-in
 - Modify user code without `ctx` operations
@@ -561,13 +568,13 @@ Ensure your patterns match exactly:
 
 ```typescript
 // ✅ Correct - exact match
-ctx.patchFile('src/index.ts', {
+ctx.patchFile("src/index.ts", {
   pattern: "app.listen(port, () => {",
   replacement: "setupStripe(); app.listen(port, () => {",
 });
 
 // ❌ Wrong - won't match whitespace differences
-ctx.patchFile('src/index.ts', {
+ctx.patchFile("src/index.ts", {
   pattern: "app.listen(port,()=>{",
   replacement: "setupStripe(); app.listen(port, () => {",
 });

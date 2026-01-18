@@ -12,6 +12,7 @@ Get started with ForgeStack OS development in 5 minutes.
 - **TypeScript**: 5.0.0+ (for IDE support)
 
 Check versions:
+
 ```bash
 node --version   # v20.11.0+
 npm --version    # 10.0.0+
@@ -44,14 +45,15 @@ npm run build
 ```
 
 Output:
+
 ```
 packages/cli
   ✅ TypeScript compiled (45 files)
   ✅ Type definitions generated
-  
+
 packages/landing
   ✅ Vite build complete (2.4MB)
-  
+
 packages/docs
   ✅ Documentation compiled
 ```
@@ -181,15 +183,15 @@ forgestack-os/
 
 ```typescript
 // packages/cli/src/commands/my-command.ts
-import { Command } from 'commander';
+import { Command } from "commander";
 
 export function createMyCommand(program: Command) {
   return program
-    .command('my-command')
-    .description('My new command')
-    .option('--option <value>', 'An option')
+    .command("my-command")
+    .description("My new command")
+    .option("--option <value>", "An option")
     .action(async (options) => {
-      console.log('Running my-command...');
+      console.log("Running my-command...");
       // Implementation
     });
 }
@@ -199,7 +201,7 @@ Add to main CLI:
 
 ```typescript
 // packages/cli/src/index.ts
-import { createMyCommand } from './commands/my-command.js';
+import { createMyCommand } from "./commands/my-command.js";
 
 // In the main CLI setup
 createMyCommand(program);
@@ -209,12 +211,15 @@ createMyCommand(program);
 
 ```typescript
 // packages/cli/src/generators/my-feature.ts
-import { StackConfig } from '../types.js';
+import { StackConfig } from "../types.js";
 
-export async function generateMyFeature(config: StackConfig, projectPath: string) {
+export async function generateMyFeature(
+  config: StackConfig,
+  projectPath: string
+) {
   // Generate files
   const files = {
-    'src/my-feature.ts': `export const myFeature = true;`,
+    "src/my-feature.ts": `export const myFeature = true;`,
   };
 
   for (const [path, content] of Object.entries(files)) {
@@ -228,17 +233,17 @@ Register in index:
 
 ```typescript
 // packages/cli/src/generators/index.ts
-export { generateMyFeature } from './my-feature.js';
+export { generateMyFeature } from "./my-feature.js";
 ```
 
 ### Adding Tests
 
 ```typescript
 // packages/cli/tests/my-command.test.ts
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from "vitest";
 
-describe('My Command', () => {
-  it('should work correctly', () => {
+describe("My Command", () => {
+  it("should work correctly", () => {
     expect(true).toBe(true);
   });
 });
@@ -283,6 +288,7 @@ git commit -m "feat: add my-feature - description"
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
 Examples:
+
 ```bash
 git commit -m "feat(cli): add stripe integration plugin"
 git commit -m "fix(generators): resolve ESM import issues"
@@ -483,12 +489,14 @@ npm run build -w packages/cli
 ### VS Code
 
 **Recommended Extensions**:
+
 - ESLint
 - Prettier
 - TypeScript Vue Plugin
 - Thunder Client (for API testing)
 
 **settings.json**:
+
 ```json
 {
   "editor.formatOnSave": true,
@@ -500,6 +508,7 @@ npm run build -w packages/cli
 ### WebStorm
 
 **Settings**:
+
 - Enable TypeScript compiler
 - ESLint: check `Automatic ESLint configuration`
 - Prettier: set as default formatter

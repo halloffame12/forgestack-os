@@ -7,6 +7,7 @@ Learn how to use local AI models with ForgeStack OS for code generation, API doc
 ## Overview
 
 ForgeStack integrates with local LLMs for:
+
 - **Code generation assistance** - Generate boilerplate, tests, docs
 - **API documentation** - Auto-generate OpenAPI specs, JSDoc comments
 - **Code reviews** - Suggest improvements and security fixes
@@ -14,6 +15,7 @@ ForgeStack integrates with local LLMs for:
 - **Migrations** - Help upgrade and refactor code
 
 **Supported Local Runtimes**:
+
 - ✅ **Ollama** (macOS, Linux, Windows)
 - ✅ **LM Studio** (macOS, Linux, Windows)
 - ✅ **LocalAI** (Docker-based, any platform)
@@ -26,6 +28,7 @@ ForgeStack integrates with local LLMs for:
 ### 1. Install Ollama (Recommended)
 
 **macOS/Linux/Windows**:
+
 ```bash
 # macOS/Linux
 brew install ollama
@@ -86,13 +89,15 @@ ollama serve
 ollama pull mistral
 ```
 
-**Pros**: 
+**Pros**:
+
 - ✅ Simple installation
 - ✅ One-click model updates
 - ✅ Excellent performance
 - ✅ Great community support
 
 **Model Options**:
+
 - `mistral` (7B) - Fast, good quality, 4.7GB
 - `neural-chat` (7B) - Optimized for conversation, 4.7GB
 - `codeup` (13B) - Faster than Llama 2 for code, 7.3GB
@@ -108,6 +113,7 @@ ollama pull mistral
 5. ForgeStack auto-detects at `http://localhost:1234`
 
 **Pros**:
+
 - ✅ Beautiful UI
 - ✅ Model management GUI
 - ✅ Easy downloads
@@ -129,6 +135,7 @@ forgestack ai config --endpoint=http://localhost:8080
 ```
 
 **Pros**:
+
 - ✅ Works on any platform
 - ✅ Containerized
 - ✅ Multiple models supported
@@ -145,6 +152,7 @@ forgestack ai setup
 ```
 
 This prompts you to:
+
 1. Choose runtime (Ollama, LM Studio, LocalAI, etc.)
 2. Confirm endpoint
 3. Select/download model
@@ -309,13 +317,13 @@ forgestack generate:code --ai --prompt="Create payment processing endpoint with 
 
 ### By Use Case
 
-| Use Case | Recommended | Size | Speed | Quality |
-|----------|-------------|------|-------|---------|
-| Quick tests | `orca-mini` | 3B | ⚡⚡⚡ | ⭐⭐⭐ |
-| General coding | `mistral` | 7B | ⚡⚡ | ⭐⭐⭐⭐ |
-| Chat-style coding | `neural-chat` | 7B | ⚡⚡ | ⭐⭐⭐⭐ |
-| Specialized code | `codeup` | 13B | ⚡ | ⭐⭐⭐⭐⭐ |
-| Best quality | `codellama` | 34B | 🐢 | ⭐⭐⭐⭐⭐ |
+| Use Case          | Recommended   | Size | Speed  | Quality    |
+| ----------------- | ------------- | ---- | ------ | ---------- |
+| Quick tests       | `orca-mini`   | 3B   | ⚡⚡⚡ | ⭐⭐⭐     |
+| General coding    | `mistral`     | 7B   | ⚡⚡   | ⭐⭐⭐⭐   |
+| Chat-style coding | `neural-chat` | 7B   | ⚡⚡   | ⭐⭐⭐⭐   |
+| Specialized code  | `codeup`      | 13B  | ⚡     | ⭐⭐⭐⭐⭐ |
+| Best quality      | `codellama`   | 34B  | 🐢     | ⭐⭐⭐⭐⭐ |
 
 ### Popular Models
 
@@ -456,6 +464,7 @@ forgestack generate --ai --temperature=0.5
 ### Data Privacy
 
 ✅ **Local models are completely private**:
+
 - No data sent to external servers
 - All processing happens on your machine
 - Works completely offline

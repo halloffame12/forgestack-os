@@ -7,6 +7,7 @@ Learn how to safely upgrade ForgeStack-generated projects with automatic migrati
 ## Overview
 
 ForgeStack provides:
+
 - **Safe file tracking** via `.forgestack/manifest.json`
 - **Automatic upgrade detection** with version compatibility checking
 - **Safe migrations** with merge conflict resolution
@@ -164,7 +165,7 @@ forgestack upgrade --strategy=manual
 #   a) Keep generated version
 #   b) Keep my changes
 #   c) Review diff
-#   > 
+#   >
 ```
 
 ### Merge (Advanced)
@@ -195,7 +196,7 @@ export async function getUsers() {
 export async function getUsers(limit = 10) {
   return db.users.findMany({
     take: limit,
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
 }
 ```
@@ -206,7 +207,7 @@ Your file was customized:
 export async function getUsers() {
   const users = await db.users.findMany();
   // Your custom caching logic
-  return cache.set('users', users);
+  return cache.set("users", users);
 }
 ```
 
@@ -249,10 +250,10 @@ Resolved:
 export async function getUsers(limit = 10) {
   const users = await db.users.findMany({
     take: limit,
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
   });
   // Preserve custom caching
-  return cache.set('users', users);
+  return cache.set("users", users);
 }
 ```
 
@@ -265,24 +266,24 @@ Plugins can handle upgrades via hooks:
 ```typescript
 // plugins/my-plugin/index.ts
 export default {
-  name: 'my-plugin',
+  name: "my-plugin",
   hooks: {
     async beforeUpgrade(ctx: UpgradeContext) {
       // Backup plugin-specific state
-      const state = ctx.loadFile('plugin-state.json');
-      ctx.backup('plugin-state-pre-upgrade.json', state);
+      const state = ctx.loadFile("plugin-state.json");
+      ctx.backup("plugin-state-pre-upgrade.json", state);
     },
 
     async afterUpgrade(ctx: UpgradeContext) {
       // Migrate plugin configuration
-      if (ctx.previousVersion === '1.0.0' && ctx.newVersion === '1.1.0') {
+      if (ctx.previousVersion === "1.0.0" && ctx.newVersion === "1.1.0") {
         // Migrate old config format to new format
-        const oldConfig = ctx.loadFile('plugin-config.json');
+        const oldConfig = ctx.loadFile("plugin-config.json");
         const newConfig = migrateConfig(oldConfig);
-        ctx.writeFile('plugin-config.json', newConfig);
+        ctx.writeFile("plugin-config.json", newConfig);
       }
 
-      ctx.log('✅ Plugin upgraded successfully');
+      ctx.log("✅ Plugin upgraded successfully");
     },
   },
 } as Plugin;
@@ -401,42 +402,34 @@ forgestack upgrade
 Create `forgestack.config.ts`:
 
 ```typescript
-import { defineConfig } from 'forgestack-os';
+import { defineConfig } from "forgestack-os";
 
 export default defineConfig({
   // Upgrade settings
   upgrade: {
     // Which files to keep during upgrade
-    preserveFiles: [
-      'README.md',
-      'CONTRIBUTING.md',
-      'docs/**',
-    ],
+    preserveFiles: ["README.md", "CONTRIBUTING.md", "docs/**"],
 
     // Automatic conflict resolution strategy
-    conflictStrategy: 'auto',
+    conflictStrategy: "auto",
 
     // Skip certain file types
-    skipPatterns: [
-      'node_modules/**',
-      'dist/**',
-      '.next/**',
-    ],
+    skipPatterns: ["node_modules/**", "dist/**", ".next/**"],
 
     // Hooks for custom upgrade logic
     beforeUpgrade: async (ctx) => {
-      console.log('Starting upgrade...');
+      console.log("Starting upgrade...");
     },
 
     afterUpgrade: async (ctx) => {
-      console.log('Upgrade complete!');
+      console.log("Upgrade complete!");
       // Run tests
-      await ctx.runCommand('npm test');
+      await ctx.runCommand("npm test");
     },
 
     // Backup settings
     backup: {
-      keep: 5,  // Keep last 5 backups
+      keep: 5, // Keep last 5 backups
       compress: true,
     },
   },
@@ -504,6 +497,7 @@ npm install
 ### v0.4.0 → v0.5.0
 
 **New Features**:
+
 - Plugin system support
 - Zod environment validation
 - Docker Compose improvements
@@ -511,6 +505,7 @@ npm install
 **Breaking Changes**: None
 
 **What updates**:
+
 - ✅ Core CLI
 - ✅ Generator templates
 - ✅ Type definitions
@@ -521,15 +516,18 @@ npm install
 ### v0.3.x → v0.4.0
 
 **New Features**:
+
 - Deterministic generation (--seed flag)
 - Multi-environment configuration
 - Plugin system foundation
 
 **Breaking Changes**:
+
 - `generateConfig()` renamed to `generateDeterministic()`
 - Environment variables now use Zod validation
 
 **Migration steps**:
+
 ```bash
 forgestack upgrade --to=0.4.0
 
@@ -549,6 +547,7 @@ npm test
 ## Best Practices
 
 ✅ **Do**:
+
 - Test upgrades in a branch first
 - Review backup before deleting old backups
 - Keep manifests committed to version control
@@ -556,6 +555,7 @@ npm test
 - Update dependencies regularly
 
 ❌ **Don't**:
+
 - Delete `.forgestack/` directory
 - Manually edit `manifest.json`
 - Skip backup creation

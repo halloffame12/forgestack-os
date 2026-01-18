@@ -2,6 +2,7 @@ import Hero from './components/Hero';
 import TrustStrip from './components/TrustStrip';
 import WhatIsForgeStack from './components/WhatIsForgeStack';
 import StackSelector from './components/StackSelector';
+import CLIExamples from './components/CLIExamples';
 import HowItWorks from './components/HowItWorks';
 import ArchitectureDeepDive from './components/ArchitectureDeepDive';
 import ComparisonSection from './components/ComparisonSection';
@@ -25,6 +26,7 @@ function App() {
             <main className="space-y-0">
                 <WhatIsForgeStack />
                 <StackSelector />
+                <CLIExamples />
                 <HowItWorks />
                 <ArchitectureDeepDive />
                 <ComparisonSection />

@@ -148,10 +148,10 @@ forgestack-os/
 ```typescript
 // packages/cli/src/core/deterministic.ts
 interface DeterministicConfig {
-  seed?: string;           // For reproducible generation
-  skipNetwork: true;       // Always true - offline only
-  version: string;         // ForgeStack version
-  timestamp: number;       // Generation time
+  seed?: string; // For reproducible generation
+  skipNetwork: true; // Always true - offline only
+  version: string; // ForgeStack version
+  timestamp: number; // Generation time
 }
 
 class DeterministicGenerator {
@@ -174,21 +174,21 @@ interface FileManifest {
   forgeStackVersion: string;
   files: {
     [path: string]: {
-      hash: string;                    // SHA256 of file content
-      generatedBy: string;             // Generator name
-      userModified?: boolean;          // Detected by change detector
-      canUpgrade: boolean;             // Safe to upgrade?
-    }
+      hash: string; // SHA256 of file content
+      generatedBy: string; // Generator name
+      userModified?: boolean; // Detected by change detector
+      canUpgrade: boolean; // Safe to upgrade?
+    };
   };
   plugins: {
     [name: string]: {
       version: string;
-      files: string[];                 // Files added by plugin
-    }
+      files: string[]; // Files added by plugin
+    };
   };
   env: {
-    schema: Record<string, any>;       // Zod schema
-    variables: string[];               // Env var names
+    schema: Record<string, any>; // Zod schema
+    variables: string[]; // Env var names
   };
 }
 ```
@@ -211,8 +211,8 @@ interface Plugin {
     code?: CodePatcher[];
     yaml?: YamlPatcher[];
   };
-  addFiles?: Record<string, string>;   // Files to add
-  env?: Record<string, string>;         // Env vars to add
+  addFiles?: Record<string, string>; // Files to add
+  env?: Record<string, string>; // Env vars to add
 }
 
 interface GenerateContext {
@@ -228,21 +228,21 @@ interface GenerateContext {
 
 ```typescript
 // packages/cli/src/generators/env-schema.ts
-import { z } from 'zod';
+import { z } from "zod";
 
 // Shared schema used by both frontend and backend
 export const EnvSchema = z.object({
   // Database
-  DATABASE_URL: z.string().url().describe('PostgreSQL connection string'),
-  
+  DATABASE_URL: z.string().url().describe("PostgreSQL connection string"),
+
   // Auth
-  AUTH_SECRET: z.string().min(32).describe('Session secret key'),
+  AUTH_SECRET: z.string().min(32).describe("Session secret key"),
   CLERK_PUBLISHABLE_KEY: z.string().optional(),
   CLERK_SECRET_KEY: z.string().optional(),
-  
+
   // API
   API_BASE_URL: z.string().url(),
-  
+
   // Third-party
   STRIPE_PUBLISHABLE_KEY: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
@@ -287,7 +287,7 @@ class UpgradeEngine {
 ```typescript
 // packages/cli/src/ai/local-ai-client.ts
 interface LocalAIProvider {
-  name: string;  // 'ollama', 'lm-studio', 'localai'
+  name: string; // 'ollama', 'lm-studio', 'localai'
   baseUrl: string;
   model: string;
   isAvailable(): Promise<boolean>;
@@ -317,6 +317,7 @@ class LocalAIClient {
 ## Data Flow
 
 ### Generation Flow
+
 ```
 User Input
     ↓
@@ -346,6 +347,7 @@ Show Next Steps
 ```
 
 ### Upgrade Flow
+
 ```
 User runs: forgestack upgrade
     ↓
@@ -387,12 +389,12 @@ Update Manifest
 
 ## Performance Targets
 
-| Operation | Target | Metric |
-|-----------|--------|--------|
-| Generation | < 30s | Full stack project |
-| Upgrade | < 20s | Planning & merge |
-| Plugin Load | < 2s | Per plugin |
-| AI Generation | < 60s | Per module |
+| Operation     | Target | Metric             |
+| ------------- | ------ | ------------------ |
+| Generation    | < 30s  | Full stack project |
+| Upgrade       | < 20s  | Planning & merge   |
+| Plugin Load   | < 2s   | Per plugin         |
+| AI Generation | < 60s  | Per module         |
 
 ---
 
@@ -409,13 +411,13 @@ Update Manifest
 
 ## Testing Strategy
 
-| Level | Coverage | Tools |
-|-------|----------|-------|
-| Unit | 90%+ | Vitest |
+| Level       | Coverage   | Tools           |
+| ----------- | ---------- | --------------- |
+| Unit        | 90%+       | Vitest          |
 | Integration | All stacks | Vitest + Docker |
-| E2E | Full flow | Playwright |
-| Performance | Benchmarks | Autocannon |
-| Security | OWASP | SonarQube, Snyk |
+| E2E         | Full flow  | Playwright      |
+| Performance | Benchmarks | Autocannon      |
+| Security    | OWASP      | SonarQube, Snyk |
 
 ---
 

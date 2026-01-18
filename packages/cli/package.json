@@ -1,6 +1,6 @@
 {
     "name": "forgestack-os-cli",
-    "version": "0.3.3",
+    "version": "0.3.4",
     "description": "ForgeStack OS CLI - Generate production-ready full-stack SaaS applications",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

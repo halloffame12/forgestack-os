@@ -139,22 +139,27 @@ docs/
 
 ```bash
 # Create project (interactive)
-forgestack create my-app
+npx forgestack-os-cli create my-app
 
 # Create with options
-forgestack create my-app --frontend=nextjs --backend=nestjs
+npx forgestack-os-cli create my-app --frontend=nextjs --backend=nestjs
+
+# Or if installed globally:
+forgestack-os-cli create my-app
+forgestack-os-cli create my-app --frontend=nextjs --backend=nestjs
 
 # Check CLI version
-forgestack --version
+npx forgestack-os-cli --version
 
 # Get help
-forgestack --help
-forgestack create --help
+npx forgestack-os-cli --help
+npx forgestack-os-cli create --help
 ```
 
 ### Stack Combinations
 
 **Popular combinations**:
+
 - React + Vite + Express + PostgreSQL + JWT
 - Next.js + NestJS + Clerk + PostgreSQL
 - Next.js + NestJS + Supabase + tRPC
@@ -165,6 +170,7 @@ See [Supported Stacks](./stacks/README.md) for all combinations.
 ### Configuration
 
 **Generated project structure**:
+
 ```
 my-app/
 ├── frontend/          # React, Next.js, or Vue
@@ -181,17 +187,20 @@ my-app/
 ## 🚀 Next Steps
 
 **First time here?**
+
 1. Read [Quick Start Guide](./guide/getting-started.md)
 2. Create your first project
 3. Explore the generated code
 4. Check out [Stack Guide](./stacks/README.md) for your chosen frameworks
 
 **Want to contribute?**
+
 1. Read [Development Quick Start](./DEVELOPMENT.md)
 2. Check [Feature Roadmap](./FEATURES_ROADMAP.md) for ideas
 3. Follow [Contributing Guide](../CONTRIBUTING.md)
 
 **Advanced user?**
+
 1. Learn about [Plugin Development](./PLUGIN_DEVELOPMENT.md)
 2. Set up [Local AI](./AI_SETUP.md)
 3. Explore [Architecture](./ARCHITECTURE.md)
@@ -220,7 +229,7 @@ my-app/
 
 ## 📋 Version Info
 
-- **Current Version**: 0.3.3
+- **Current Version**: 0.3.4
 - **Node.js Required**: 20.0.0+
 - **npm Required**: 10.0.0+
 - **License**: MIT
@@ -230,18 +239,21 @@ my-app/
 ## 🔗 External Resources
 
 ### Learning
+
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Node.js Documentation](https://nodejs.org/docs/)
 - [React Documentation](https://react.dev)
 - [Next.js Documentation](https://nextjs.org/docs)
 
 ### Tools & Services
+
 - [Clerk Authentication](https://clerk.com)
 - [Supabase](https://supabase.com)
 - [Prisma ORM](https://www.prisma.io)
 - [NestJS Framework](https://docs.nestjs.com)
 
 ### Community
+
 - [GitHub Discussions](https://github.com/halloffame12/forgestack-os/discussions)
 - [npm Package](https://www.npmjs.com/package/forgestack-os-cli)
 - [Open Source on GitHub](https://github.com/halloffame12/forgestack-os)
@@ -250,4 +262,4 @@ my-app/
 
 **Happy building! 🚀**
 
-*Last updated: January 2025*
+_Last updated: January 2025_

@@ -3,7 +3,7 @@
 <div align="center">
 
 ![ForgeStack OS](https://img.shields.io/badge/ForgeStack-OS-blue?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-0.3.3-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-0.3.4-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=for-the-badge&logo=typescript)
 ![Node](https://img.shields.io/badge/Node-20+-green?style=for-the-badge&logo=node.js)
@@ -28,10 +28,10 @@ npx forgestack-os-cli create my-saas-app
 npm install -g forgestack-os-cli
 
 # Create a new project
-forgestack create my-saas-app
-
-# Or use npx directly
 npx forgestack-os-cli create my-saas-app
+
+# Or if installed globally:
+forgestack-os-cli create my-saas-app
 
 # Follow the interactive prompts
 ? Choose your frontend framework: Next.js 14 (App Router)
@@ -305,13 +305,16 @@ my-app/
 ### Create Project
 
 ```bash
-forgestack create <project-name> [options]
+npx forgestack-os-cli create <project-name> [options]
+
+# Or if installed globally:
+forgestack-os-cli create <project-name> [options]
 
 Options:
-  --frontend <framework>    Frontend framework (react-vite, nextjs)
-  --backend <framework>     Backend framework (express, nestjs)
-  --auth <provider>         Auth provider (jwt, clerk, supabase)
-  --database <db>           Database (postgresql, mongodb, mysql, sqlite)
+  --frontend <framework>    Frontend framework (react-vite, nextjs, vue-vite, sveltekit)
+  --backend <framework>     Backend framework (express, fastify, nestjs, bun-elysia, go-fiber)
+  --auth <provider>         Auth provider (jwt, clerk, supabase, authjs, firebase)
+  --database <db>           Database (postgresql, mongodb, mysql, sqlite, supabase-db)
   --api <style>             API style (rest, graphql, trpc)
   --docker                  Enable Docker
   --multi-tenant            Enable multi-tenancy
@@ -323,17 +326,17 @@ Options:
 
 ```bash
 # Interactive mode (recommended)
-forgestack create my-app
+npx forgestack-os-cli create my-app
 
 # With options
-forgestack create my-app --frontend=nextjs --backend=nestjs --auth=clerk
+npx forgestack-os-cli create my-app --frontend=nextjs --backend=nestjs --auth=clerk
 
 # Skip installation
-forgestack create my-app --skip-install
+npx forgestack-os-cli create my-app --skip-install
 
 # Help
-forgestack --help
-forgestack create --help
+npx forgestack-os-cli --help
+npx forgestack-os-cli create --help
 ```
 
 ---
@@ -341,10 +344,12 @@ forgestack create --help
 ## 📖 Documentation
 
 ### Getting Started
+
 - **[Quick Start Guide](./docs/guide/getting-started.md)** - Installation and first project
 - **[Development Quick Start](./docs/DEVELOPMENT.md)** - Set up your development environment
 
 ### User Guides
+
 - **[Stack Guide](./docs/stacks/)** - Detailed stack documentation
 - **[Multi-Tenancy](./docs/features/multi-tenancy.md)** - Multi-tenant architecture
 - **[Deployment](./docs/deployment/)** - Deploy to production
@@ -352,12 +357,14 @@ forgestack create --help
 - **[Upgrading Projects](./docs/UPGRADE_GUIDE.md)** - Safely upgrade generated projects with migrations
 
 ### Advanced Topics
+
 - **[Architecture Overview](./docs/ARCHITECTURE.md)** - Complete system design and components
 - **[Plugin Development](./docs/PLUGIN_DEVELOPMENT.md)** - Build plugins to extend ForgeStack
 - **[Local AI Setup](./docs/AI_SETUP.md)** - Use local LLMs for code generation and analysis
 - **[Feature Roadmap](./docs/FEATURES_ROADMAP.md)** - See what's coming in v0.4.0 → v1.0.0
 
 ### Reference
+
 - **[API Reference](./docs/cli/)** - CLI commands and options
 - **[CHANGELOG](./CHANGELOG.md)** - Version history and release notes
 - **[Contributing Guide](./CONTRIBUTING.md)** - How to contribute
