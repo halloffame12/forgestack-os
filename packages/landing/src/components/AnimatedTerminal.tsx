@@ -75,20 +75,20 @@ const AnimatedTerminal = () => {
     };
 
     return (
-        <div className="w-full max-w-2xl mx-auto rounded-xl overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-2xl shadow-blue-500/10 font-mono text-sm leading-relaxed">
-            <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
-                <div className="flex space-x-2">
-                    <Circle size={10} className="fill-red-500 text-red-500" />
-                    <Circle size={10} className="fill-yellow-500 text-yellow-500" />
-                    <Circle size={10} className="fill-green-500 text-green-500" />
+        <div className="w-full max-w-2xl mx-auto rounded-lg sm:rounded-xl overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-2xl shadow-blue-500/10 font-mono text-xs sm:text-sm leading-relaxed">
+            <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-white/5 border-b border-white/5">
+                <div className="flex space-x-1.5 sm:space-x-2">
+                    <Circle size={8} className="fill-red-500 text-red-500 sm:w-[10px] sm:h-[10px]" />
+                    <Circle size={8} className="fill-yellow-500 text-yellow-500 sm:w-[10px] sm:h-[10px]" />
+                    <Circle size={8} className="fill-green-500 text-green-500 sm:w-[10px] sm:h-[10px]" />
                 </div>
-                <div className="flex items-center space-x-2 text-white/30 text-xs">
+                <div className="hidden sm:flex items-center space-x-2 text-white/30 text-xs">
                     <Terminal size={12} />
                     <span>bash — 80x24</span>
                 </div>
                 <button
                     onClick={copyCommand}
-                    className="text-white/30 hover:text-white transition-colors"
+                    className="p-1 text-white/30 hover:text-white transition-colors rounded hover:bg-white/5"
                 >
                     {isCopied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
                 </button>
@@ -96,7 +96,7 @@ const AnimatedTerminal = () => {
 
             <div
                 ref={scrollRef}
-                className="p-6 min-h-[380px] h-[380px] overflow-y-auto relative scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
+                className="p-3 sm:p-6 min-h-[280px] sm:min-h-[380px] h-[280px] sm:h-[380px] overflow-y-auto relative"
             >
                 <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px] pointer-events-none h-full" />
 

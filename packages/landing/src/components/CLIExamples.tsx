@@ -108,7 +108,7 @@ const CLIExamples = () => {
                 </motion.div>
 
                 {/* Commands Grid */}
-                <div className="grid lg:grid-cols-2 gap-6">
+                <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
                     {commands.map((cmd, idx) => (
                         <motion.div
                             key={idx}
@@ -116,12 +116,12 @@ const CLIExamples = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: idx * 0.05 }}
-                            className="group glass rounded-xl p-6 border border-white/10 hover:border-blue-500/30 transition-all duration-300"
+                            className="group glass rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 border border-white/10 hover:border-blue-500/30 transition-all duration-300"
                         >
                             {/* Header */}
-                            <div className="mb-3">
-                                <h3 className="text-lg font-bold text-white mb-2">{cmd.title}</h3>
-                                <p className="text-sm text-white/60">{cmd.description}</p>
+                            <div className="mb-2 sm:mb-3">
+                                <h3 className="text-base sm:text-lg font-bold text-white mb-1 sm:mb-2">{cmd.title}</h3>
+                                <p className="text-xs sm:text-sm text-white/60">{cmd.description}</p>
                             </div>
 
                             {/* Tags */}
@@ -139,15 +139,15 @@ const CLIExamples = () => {
                             )}
 
                             {/* Code Block */}
-                            <div className="bg-[#0a0a0a] rounded-lg border border-white/5 p-4 mb-4 relative group/code">
-                                <code className="text-sm text-green-400 font-mono whitespace-pre-wrap break-words leading-relaxed">
+                            <div className="bg-[#0a0a0a] rounded border sm:rounded-lg border-white/5 p-2 sm:p-4 mb-3 sm:mb-4 relative group/code overflow-x-auto">
+                                <code className="text-xs sm:text-sm text-green-400 font-mono whitespace-pre-wrap break-words leading-relaxed">
                                     $ {cmd.code}
                                 </code>
 
                                 {/* Copy Button */}
                                 <button
                                     onClick={() => copyCommand(cmd.code)}
-                                    className="absolute top-3 right-3 p-2 rounded opacity-0 group-hover/code:opacity-100 transition-all bg-white/5 hover:bg-white/10 border border-white/10"
+                                    className="absolute top-2 sm:top-3 right-2 sm:right-3 p-1.5 sm:p-2 rounded opacity-0 group-hover/code:opacity-100 transition-all bg-white/5 hover:bg-white/10 border border-white/10"
                                 >
                                     {copiedCode === cmd.code ? (
                                         <Check size={16} className="text-green-400" />
@@ -166,11 +166,11 @@ const CLIExamples = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: 0.3 }}
-                    className="mt-16 glass rounded-xl p-8 border border-white/10"
+                    className="mt-8 sm:mt-12 md:mt-16 glass rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 border border-white/10"
                 >
-                    <h3 className="text-2xl font-bold mb-6">Available Options</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Available Options</h3>
 
-                    <div className="grid md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                         <div>
                             <h4 className="font-semibold text-blue-400 mb-4">Frameworks</h4>
                             <ul className="space-y-2 text-white/70 text-sm">
@@ -184,7 +184,7 @@ const CLIExamples = () => {
 
                         <div>
                             <h4 className="font-semibold text-blue-400 mb-4">Configuration</h4>
-                            <ul className="space-y-2 text-white/70 text-sm">
+                            <ul className="space-y-1.5 sm:space-y-2 text-white/70 text-xs sm:text-sm leading-relaxed">
                                 <li><span className="text-white font-mono">--preset</span>: next-nest-clerk-pg, react-express-jwt-mongo, next-fastify-supabase-trpc</li>
                                 <li><span className="text-white font-mono">--docker</span>: Include Docker Compose setup</li>
                                 <li><span className="text-white font-mono">--multi-tenant</span>: Enable multi-tenancy</li>

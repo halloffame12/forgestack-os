@@ -5,12 +5,12 @@ import { Button } from './ui/button';
 
 const Hero = () => {
     return (
-        <section className="relative pt-32 pb-20 overflow-hidden min-h-[90vh] flex items-center">
+        <section className="relative pt-16 sm:pt-20 md:pt-32 pb-12 sm:pb-16 md:pb-20 overflow-hidden min-h-[80vh] sm:min-h-[85vh] md:min-h-[90vh] flex items-center">
             {/* Background Effects */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl aspect-square bg-gradient-radial from-blue-500/10 via-purple-500/5 to-transparent rounded-full blur-[120px] -z-10" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl aspect-square bg-gradient-radial from-blue-500/10 via-purple-500/5 to-transparent rounded-full blur-[80px] sm:blur-[100px] md:blur-[120px] -z-10" />
 
             <div className="container-custom relative z-10">
-                <div className="grid lg:grid-cols-12 gap-12 items-center">
+                <div className="grid lg:grid-cols-12 gap-6 sm:gap-8 md:gap-12 items-center">
 
                     {/* Left Column: Text Content */}
                     <div className="lg:col-span-7 text-center lg:text-left">
@@ -19,7 +19,7 @@ const Hero = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5 }}
                         >
-                            <a href="https://github.com/halloffame12/forgestack-os" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/5 text-white/80 border border-white/10 mb-8 hover:bg-white/10 transition-colors cursor-pointer group hover:border-white/20">
+                            <a href="https://github.com/halloffame12/forgestack-os" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-xs font-medium bg-white/5 text-white/80 border border-white/10 mb-4 sm:mb-6 md:mb-8 hover:bg-white/10 transition-colors cursor-pointer group hover:border-white/20">
                                 <Github className="mr-2 w-3.5 h-3.5 fill-current" />
                                 Star on GitHub
                                 <span className="mx-2 h-3 w-[1px] bg-white/20"></span>
@@ -27,13 +27,13 @@ const Hero = () => {
                                 <ChevronRight className="ml-1 w-3 h-3 group-hover:translate-x-0.5 transition-transform text-white/40" />
                             </a>
 
-                            <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1]">
+                            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 sm:mb-6 md:mb-8 leading-[1.1]">
                                 <span className="block text-white">Build, Run, and Scale</span>
                                 <span className="block text-gradient">Any Full-Stack App</span>
                                 <span className="block text-white">Instantly.</span>
                             </h1>
 
-                            <p className="max-w-2xl mx-auto lg:mx-0 text-xl text-white/60 mb-10 text-balance leading-relaxed">
+                            <p className="max-w-2xl mx-auto lg:mx-0 text-sm sm:text-base md:text-lg lg:text-xl text-white/60 mb-6 sm:mb-8 md:mb-10 text-balance leading-relaxed px-2 sm:px-0">
                                 ForgeStack OS generates production-ready apps with your choice of frontend, backend, auth, database, and Docker — free & local-first.
                             </p>
 
