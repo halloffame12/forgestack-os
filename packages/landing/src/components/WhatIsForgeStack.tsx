@@ -4,7 +4,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './
 
 const WhatIsForgeStack = () => {
     return (
-        <section className="py-20">
+        <section id="features" className="py-20">
             <div className="container-custom">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

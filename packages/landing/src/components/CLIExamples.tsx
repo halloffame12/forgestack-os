@@ -82,7 +82,7 @@ const CLIExamples = () => {
     };
 
     return (
-        <section className="py-20 relative overflow-hidden">
+        <section className="py-20 relative overflow-visible">
             <div className="absolute inset-0 bg-gradient-to-b from-blue-500/5 via-transparent to-purple-500/5 -z-10" />
 
             <div className="container-custom">
@@ -116,7 +116,7 @@ const CLIExamples = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: idx * 0.05 }}
-                            className="group glass rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 border border-white/10 hover:border-blue-500/30 transition-all duration-300"
+                            className="group glass rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 border border-white/10 hover:border-blue-500/30 transition-all duration-300 min-w-0"
                         >
                             {/* Header */}
                             <div className="mb-2 sm:mb-3">
@@ -139,8 +139,8 @@ const CLIExamples = () => {
                             )}
 
                             {/* Code Block */}
-                            <div className="bg-[#0a0a0a] rounded border sm:rounded-lg border-white/5 p-2 sm:p-4 mb-3 sm:mb-4 relative group/code overflow-x-auto">
-                                <code className="text-xs sm:text-sm text-green-400 font-mono whitespace-pre-wrap break-words leading-relaxed">
+                            <div className="bg-[#0a0a0a] rounded border sm:rounded-lg border-white/5 p-2 sm:p-4 mb-3 sm:mb-4 relative group/code overflow-x-auto w-full max-w-full min-w-0">
+                                <code className="block w-full text-xs sm:text-sm text-green-400 font-mono whitespace-pre leading-relaxed">
                                     $ {cmd.code}
                                 </code>
 
@@ -173,7 +173,7 @@ const CLIExamples = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
                         <div>
                             <h4 className="font-semibold text-blue-400 mb-4">Frameworks</h4>
-                            <ul className="space-y-2 text-white/70 text-sm">
+                            <ul className="space-y-1.5 sm:space-y-2 text-white/70 text-xs sm:text-sm leading-relaxed">
                                 <li><span className="text-white font-mono">--frontend</span>: react-vite, nextjs, vue-vite, sveltekit</li>
                                 <li><span className="text-white font-mono">--backend</span>: express, fastify, nestjs, bun-elysia, go-fiber</li>
                                 <li><span className="text-white font-mono">--auth</span>: jwt, clerk, supabase, authjs, firebase</li>

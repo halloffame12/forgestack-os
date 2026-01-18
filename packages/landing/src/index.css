@@ -63,6 +63,28 @@ body {
     scrollbar-width: thin;
 }
 
+@media (max-width: 640px) {
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: transparent;
+        border: 0;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    * {
+        scrollbar-width: none;
+        scrollbar-color: transparent transparent;
+    }
+}
+
 @layer base {
     html {
         scroll-behavior: smooth;
