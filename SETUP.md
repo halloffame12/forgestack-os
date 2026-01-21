@@ -66,9 +66,15 @@ npm link
 
 # Verify installation
 forgestack --version
+
+# Verify new commands are available
+forgestack organize --help
+forgestack run-tasks --help
 ```
 
 ### Step 4: Test the CLI
+
+#### Test Project Creation
 
 ```bash
 # Create a test project
@@ -88,6 +94,54 @@ cd test-app
 
 # Start development servers
 npm run dev
+```
+
+#### Test File Organization Command
+
+```bash
+# Create a test directory with mixed files
+mkdir test-organize
+cd test-organize
+touch document.pdf image.jpg video.mp4 code.js data.csv
+
+# Test organize by type
+forgestack organize . --strategy type --duplicates
+
+# Check results
+ls -la
+# Output: Documents/, Images/, Videos/, Code/, Data/ folders created
+```
+
+#### Test Task Runner Command
+
+```bash
+# Create a sample tasks.json
+cat > tasks.json << 'EOF'
+{
+  "tasks": [
+    {
+      "name": "Echo 1",
+      "command": "echo Task 1 executed"
+    },
+    {
+      "name": "Echo 2",
+      "command": "echo Task 2 executed"
+    },
+    {
+      "name": "List files",
+      "command": "ls -la"
+    }
+  ],
+  "parallel": false,
+  "stopOnError": false
+}
+EOF
+
+# Run tasks
+forgestack run-tasks ./tasks.json
+
+# Run with parallel execution
+forgestack run-tasks ./tasks.json --parallel
 ```
 
 **Pro Tip: Non-Interactive Mode (Great for CI/CD)**

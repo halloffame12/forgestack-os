@@ -5,6 +5,48 @@ All notable changes to ForgeStack OS will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.5] - 2026-01-21
+
+### Added
+
+- **`organize` command** - File organization utility for sorting files by type (Images, Documents, Videos, Code, Archives, etc.) or by date (YYYY-MM format).
+  - MD5-based duplicate detection with optional isolation to `Duplicates` folder
+  - Recursive directory processing with system folder exclusion (node_modules, .git, .env, etc.)
+  - Interactive mode with user-friendly prompts
+  - Comprehensive error handling for invalid paths and permission issues
+
+- **`run-tasks` command** - Batch task runner for executing shell commands from JSON config files.
+  - Sequential and parallel execution modes
+  - Per-task working directory support
+  - Configurable error handling (stop-on-error flag)
+  - Task success/failure tracking with detailed reporting
+  - Cross-platform shell execution (Windows, macOS, Linux)
+
+- New utility modules:
+  - `src/utils/file-organizer.ts` - File organization and duplicate detection logic
+  - `src/utils/task-runner.ts` - Task execution engine
+
+- Enhanced documentation with command examples and usage patterns
+
+### Changed
+
+- CLI now supports three main commands: `create`, `organize`, and `run-tasks`
+- Updated `src/index.ts` to register new commands with proper option handling
+- Improved error messages for better user experience
+
+### Fixed
+
+- Command handler signatures updated to match Commander.js specification
+- Added proper handling for CLI options and arguments
+- Improved file hashing with error recovery for unreadable files
+- Task execution now properly handles cross-platform shell differences
+
+### Docs
+
+- Updated `packages/cli/README.md` with `organize` and `run-tasks` command documentation
+- Added comprehensive examples for both new commands
+- Updated feature list to include new utilities
+
 ## [0.3.3] - 2026-01-17
 
 ### Fixed

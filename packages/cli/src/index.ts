@@ -4,6 +4,8 @@ import { createRequire } from 'module';
 import { Command } from 'commander';
 
 import { createCommand } from './commands/create.js';
+import { organizeCommand } from './commands/organize.js';
+import { runTasksCommand } from './commands/run-tasks.js';
 
 const pkgRequire = createRequire(import.meta.url);
 const { version: CLI_VERSION } = pkgRequire('../package.json') as { version: string };
@@ -31,5 +33,19 @@ program
     .option('--multi-tenant', 'Enable multi-tenancy')
     .option('--skip-install', 'Skip dependency installation')
     .option('--skip-git', 'Skip Git initialization');
+
+program
+    .command('organize [folder-path]')
+    .description('Organize files by type or date')
+    .action(organizeCommand)
+    .option('--strategy <type>', 'Organization strategy: type or date')
+    .option('--duplicates', 'Move duplicate files to a Duplicates folder');
+
+program
+    .command('run-tasks [config-path]')
+    .description('Run batch tasks from a JSON config file')
+    .action(runTasksCommand)
+    .option('--parallel', 'Run tasks in parallel instead of sequentially')
+    .option('--stop-on-error', 'Stop execution if any task fails');
 
 program.parse();

@@ -1,0 +1,31 @@
+{
+  "tasks": [
+    {
+      "name": "Clean build directory",
+      "command": "rm -rf dist",
+      "cwd": "./"
+    },
+    {
+      "name": "Install dependencies",
+      "command": "npm install",
+      "cwd": "./"
+    },
+    {
+      "name": "Build project",
+      "command": "npm run build",
+      "cwd": "./"
+    },
+    {
+      "name": "Run linter",
+      "command": "npm run lint",
+      "cwd": "./"
+    },
+    {
+      "name": "Run tests",
+      "command": "npm test",
+      "cwd": "./"
+    }
+  ],
+  "parallel": false,
+  "stopOnError": true
+}

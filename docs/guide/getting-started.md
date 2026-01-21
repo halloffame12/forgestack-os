@@ -5,6 +5,7 @@ Welcome to ForgeStack OS! This guide will help you get from zero to a running fu
 ## 📋 Prerequisites
 
 Before you begin, ensure you have the following installed:
+
 - **Node.js**: v18.0.0 or higher
 - **npm** or **pnpm** or **yarn**
 - **Docker** & **Docker Compose** (optional, but recommended for database and local environment)

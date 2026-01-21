@@ -1,0 +1,26 @@
+{
+  "tasks": [
+    {
+      "name": "Lint frontend",
+      "command": "npm run lint",
+      "cwd": "./packages/landing"
+    },
+    {
+      "name": "Lint CLI",
+      "command": "npm run lint",
+      "cwd": "./packages/cli"
+    },
+    {
+      "name": "Build frontend",
+      "command": "npm run build",
+      "cwd": "./packages/landing"
+    },
+    {
+      "name": "Build CLI",
+      "command": "npm run build",
+      "cwd": "./packages/cli"
+    }
+  ],
+  "parallel": true,
+  "stopOnError": false
+}

@@ -50,9 +50,21 @@ const CLIExamples = () => {
             tags: ['minimal', 'sqlite']
         },
         {
+            title: 'Organize Files by Type',
+            description: 'Sort files into categories with duplicate detection',
+            code: 'npx forgestack-os-cli organize ~/Downloads \\\n  --strategy type \\\n  --duplicates',
+            tags: ['utility', 'files']
+        },
+        {
+            title: 'Run Task Pipeline',
+            description: 'Execute complex workflows from JSON config',
+            code: 'npx forgestack-os-cli run-tasks ./tasks.json \\\n  --parallel \\\n  --stop-on-error false',
+            tags: ['utility', 'automation']
+        },
+        {
             title: 'JSON Stack Config',
             description: 'Provide complete configuration as JSON string',
-            code: 'npx forgestack-os-cli create my-custom \\\n  --stack \'{"frontend":"nextjs","backend":"fastify","auth":"supabase","database":"supabase-db","apiStyle":"trpc","docker":true,"multiTenant":true}\'',
+            code: 'npx forgestack-os-cli create my-custom \\\n  --stack \'{\"frontend\":\"nextjs\",\"backend\":\"fastify\",\"auth\":\"supabase\",\"database\":\"supabase-db\",\"apiStyle\":\"trpc\",\"docker\":true}\'',
             tags: ['json', 'advanced']
         },
         {
@@ -168,11 +180,11 @@ const CLIExamples = () => {
                     transition={{ duration: 0.6, delay: 0.3 }}
                     className="mt-8 sm:mt-12 md:mt-16 glass rounded-lg sm:rounded-xl p-4 sm:p-6 md:p-8 border border-white/10"
                 >
-                    <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Available Options</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Available Commands & Options</h3>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
                         <div>
-                            <h4 className="font-semibold text-blue-400 mb-4">Frameworks</h4>
+                            <h4 className="font-semibold text-blue-400 mb-4">Project Creation</h4>
                             <ul className="space-y-1.5 sm:space-y-2 text-white/70 text-xs sm:text-sm leading-relaxed">
                                 <li><span className="text-white font-mono">--frontend</span>: react-vite, nextjs, vue-vite, sveltekit</li>
                                 <li><span className="text-white font-mono">--backend</span>: express, fastify, nestjs, bun-elysia, go-fiber</li>
@@ -190,6 +202,17 @@ const CLIExamples = () => {
                                 <li><span className="text-white font-mono">--multi-tenant</span>: Enable multi-tenancy</li>
                                 <li><span className="text-white font-mono">--skip-install</span>: Skip npm install</li>
                                 <li><span className="text-white font-mono">--skip-git</span>: Skip git initialization</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 className="font-semibold text-green-400 mb-4">Utility Commands</h4>
+                            <ul className="space-y-1.5 sm:space-y-2 text-white/70 text-xs sm:text-sm leading-relaxed">
+                                <li><span className="text-white font-mono">organize</span>: Sort files by type/date</li>
+                                <li><span className="text-white font-mono">--strategy</span>: type or date</li>
+                                <li><span className="text-white font-mono">--duplicates</span>: Detect duplicates</li>
+                                <li><span className="text-white font-mono">run-tasks</span>: Execute task workflows</li>
+                                <li><span className="text-white font-mono">--parallel</span>: Run concurrently</li>
                             </ul>
                         </div>
                     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Shield, Globe, Layers, Cpu, Code2 } from 'lucide-react';
+import { Zap, Shield, Globe, Layers, Cpu, Code2, Zap as ZapAlt, Workflow } from 'lucide-react';
 
 const FEATURE_LIST = [
     {
@@ -38,6 +38,18 @@ const FEATURE_LIST = [
         description: 'Ready to deploy to Vercel, Render, or any other platform.',
         icon: <Cpu className="text-red-400" />,
         color: 'red'
+    },
+    {
+        title: 'File Organization',
+        description: 'Organize files by type or date with automatic duplicate detection.',
+        icon: <ZapAlt className="text-orange-400" />,
+        color: 'orange'
+    },
+    {
+        title: 'Batch Execution',
+        description: 'Run complex task workflows sequentially or in parallel with error handling.',
+        icon: <Workflow className="text-cyan-400" />,
+        color: 'cyan'
     },
 ];
 
@@ -78,3 +90,4 @@ const Features = () => {
 };
 
 export default Features;
+
