@@ -3,10 +3,10 @@
 <div align="center">
 
 ![ForgeStack OS](https://img.shields.io/badge/ForgeStack-OS-blue?style=for-the-badge)
-![Version](https://img.shields.io/badge/version-0.3.4-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-0.3.5-blue?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=for-the-badge&logo=typescript)
-![Node](https://img.shields.io/badge/Node-20+-green?style=for-the-badge&logo=node.js)
+![Node](https://img.shields.io/badge/Node-18+-green?style=for-the-badge&logo=node.js)
 
 **One platform. Any stack. Production-ready.**
 
@@ -58,7 +58,91 @@ npm run dev
 
 ---
 
+## 🛠️ Utility Commands (New in v0.3.5)
+
+Beyond project generation, ForgeStack CLI now includes powerful utility commands:
+
+### 📁 Organize - File Organization Utility
+
+Organize files by type or date with automatic duplicate detection:
+
+```bash
+# Organize by file type
+npx forgestack-os-cli organize ~/Downloads --strategy type --duplicates
+
+# Organize by date (YYYY-MM format)
+npx forgestack-os-cli organize ~/Photos --strategy date
+
+# Interactive mode
+npx forgestack-os-cli organize
+```
+
+**Features:**
+- 9 file categories (Images, Documents, Videos, Audio, Code, Archives, Data, Executables, Others)
+- MD5-based duplicate detection
+- Automatic system folder exclusion (node_modules, .git, dist, etc.)
+- Cross-platform compatible
+
+### 🚀 Run-Tasks - Batch Task Runner
+
+Execute shell commands from JSON configuration with sequential or parallel execution:
+
+```bash
+# Run tasks from config file
+npx forgestack-os-cli run-tasks ./tasks.json
+
+# Run in parallel mode
+npx forgestack-os-cli run-tasks ./tasks.json --parallel
+
+# Interactive mode
+npx forgestack-os-cli run-tasks
+```
+
+**Example tasks.json:**
+```json
+{
+  "tasks": [
+    {
+      "name": "Build Frontend",
+      "command": "npm run build",
+      "cwd": "./packages/frontend"
+    },
+    {
+      "name": "Build Backend",
+      "command": "npm run build",
+      "cwd": "./packages/backend"
+    }
+  ],
+  "parallel": true,
+  "stopOnError": false
+}
+```
+
+**Features:**
+- Sequential or parallel execution
+- Task-specific working directories
+- Configurable error handling
+- Cross-platform shell support
+- Comprehensive error reporting
+
+---
+
 ## ✨ Features
+
+### 🛠️ **Utility Commands** *(New in v0.3.5)*
+
+**File Organization - `organize` command**
+- Organize by file type or date (YYYY-MM format)
+- MD5-based duplicate detection
+- 9 file categories (Images, Documents, Videos, Audio, Code, Archives, Data, Executables, Others)
+- Automatic system folder exclusion (node_modules, .git, dist, etc.)
+
+**Task Runner - `run-tasks` command**
+- Batch command execution (sequential or parallel modes)
+- Task-specific working directories
+- Cross-platform shell support
+
+---
 
 ### 🎯 **Local-First**
 
