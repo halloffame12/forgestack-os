@@ -57,7 +57,7 @@ const Hero = () => {
                                 <Sparkles className="mr-2 w-4 h-4 text-yellow-500" />
                                 <span className="text-white/70">New Release</span>
                                 <span className="mx-2 h-4 w-[1px] bg-white/20"></span>
-                                <span className="font-mono font-bold text-gradient">v0.3.5</span>
+                                <span className="font-mono font-bold text-gradient">v0.3.6</span>
                                 <ChevronRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform text-white/40" />
                             </motion.a>
 

@@ -197,7 +197,7 @@ const AnimatedTerminal = () => {
 
             {/* Terminal Footer */}
             <div className="px-4 py-2 border-t border-white/5 bg-white/[0.02] flex items-center justify-between text-xs text-white/30">
-                <span>forgestack-os-cli v0.3.5</span>
+                <span>forgestack-os-cli v0.3.6</span>
                 <div className="flex items-center gap-2">
                     <Circle size={6} className={`${isTyping ? 'text-yellow-500 animate-pulse' : 'text-green-500'} fill-current`} />
                     <span>{isTyping ? 'Running...' : 'Complete'}</span>
