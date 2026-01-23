@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/halloffame12/forgestack-os/main/docs/assets/logo.svg" alt="ForgeStack OS Logo" width="120" height="120" />
+  <img src="https://i.postimg.cc/Y051sTkd/favicon.jpg" alt="ForgeStack OS Logo" width="120" height="120" style="border-radius: 20px;" />
 </p>
 
 <h1 align="center">ForgeStack OS</h1>
