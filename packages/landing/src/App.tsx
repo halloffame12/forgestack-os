@@ -16,14 +16,21 @@ import './index.css';
 
 function App() {
     return (
-        <div className="bg-[#0a0a0a] text-white selection:bg-blue-500/30 overflow-x-hidden min-h-screen relative font-sans">
+        <div className="bg-[#030303] text-white selection:bg-blue-500/30 overflow-x-hidden min-h-screen relative font-sans noise-overlay">
+            {/* Aurora Background */}
+            <div className="aurora" />
+            
             {/* Global Background Grid */}
-            <div className="fixed inset-0 bg-grid opacity-20 pointer-events-none -z-50" />
+            <div className="fixed inset-0 bg-grid opacity-30 pointer-events-none -z-50" />
+            
+            {/* Ambient Orbs */}
+            <div className="fixed top-1/4 left-1/4 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[150px] pointer-events-none -z-40 animate-pulse-glow" />
+            <div className="fixed bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[150px] pointer-events-none -z-40 animate-pulse-glow" style={{ animationDelay: '-1.5s' }} />
 
             <Hero />
             <TrustStrip />
 
-            <main className="space-y-0">
+            <main className="space-y-0 relative z-10">
                 <WhatIsForgeStack />
                 <StackSelector />
                 <CLIExamples />

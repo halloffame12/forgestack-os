@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { Terminal, Check, Copy, Circle } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Terminal, Check, Copy, Circle, Sparkles } from 'lucide-react';
 
 interface Command {
     text: string;
@@ -26,6 +26,7 @@ const commands: Command[] = [
 const AnimatedTerminal = () => {
     const [visibleLines, setVisibleLines] = useState<Command[]>([]);
     const [isCopied, setIsCopied] = useState(false);
+    const [isTyping, setIsTyping] = useState(true);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -35,31 +36,25 @@ const AnimatedTerminal = () => {
 
         const processLine = () => {
             if (!isMounted) return;
-            // Strict check to prevent out of bounds access
-            if (currentLine >= commands.length) return;
+            if (currentLine >= commands.length) {
+                setIsTyping(false);
+                return;
+            }
 
             const commandToProcess = commands[currentLine];
-
-            // Safety check
             if (!commandToProcess) return;
 
-            setVisibleLines(prev => {
-                // Defensive: ensure we don't add duplicates if logic is racy (though local var prevents it usually)
-                return [...prev, commandToProcess];
-            });
+            setVisibleLines(prev => [...prev, commandToProcess]);
 
-            // Scroll to bottom
             if (scrollRef.current) {
                 scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
             }
 
             const delay = commandToProcess.delay || 800;
             currentLine++;
-
             timeoutId = setTimeout(processLine, delay);
         };
 
-        // Start animation
         timeoutId = setTimeout(processLine, 500);
 
         return () => {
@@ -75,67 +70,138 @@ const AnimatedTerminal = () => {
     };
 
     return (
-        <div className="w-full max-w-2xl mx-auto rounded-lg sm:rounded-xl overflow-hidden border border-white/10 bg-[#0a0a0a] shadow-2xl shadow-blue-500/10 font-mono text-xs sm:text-sm leading-relaxed">
-            <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-white/5 border-b border-white/5">
-                <div className="flex space-x-1.5 sm:space-x-2">
-                    <Circle size={8} className="fill-red-500 text-red-500 sm:w-[10px] sm:h-[10px]" />
-                    <Circle size={8} className="fill-yellow-500 text-yellow-500 sm:w-[10px] sm:h-[10px]" />
-                    <Circle size={8} className="fill-green-500 text-green-500 sm:w-[10px] sm:h-[10px]" />
+        <div className="w-full max-w-2xl mx-auto rounded-2xl overflow-hidden border border-white/10 bg-[#0a0a0a]/90 backdrop-blur-xl shadow-2xl shadow-blue-500/10 font-mono text-sm leading-relaxed">
+            {/* Terminal Header */}
+            <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-white/[0.03] to-white/[0.06] border-b border-white/5">
+                <div className="flex items-center gap-2">
+                    <div className="flex space-x-2">
+                        <motion.div 
+                            className="w-3 h-3 rounded-full bg-red-500"
+                            whileHover={{ scale: 1.2 }}
+                        />
+                        <motion.div 
+                            className="w-3 h-3 rounded-full bg-yellow-500"
+                            whileHover={{ scale: 1.2 }}
+                        />
+                        <motion.div 
+                            className="w-3 h-3 rounded-full bg-green-500"
+                            whileHover={{ scale: 1.2 }}
+                        />
+                    </div>
+                    <div className="hidden sm:flex items-center gap-2 ml-4 text-white/30 text-xs">
+                        <Terminal size={12} />
+                        <span>forgestack-cli</span>
+                    </div>
                 </div>
-                <div className="hidden sm:flex items-center space-x-2 text-white/30 text-xs">
-                    <Terminal size={12} />
-                    <span>bash — 80x24</span>
-                </div>
-                <button
+                
+                <motion.button
                     onClick={copyCommand}
-                    className="p-1 text-white/30 hover:text-white transition-colors rounded hover:bg-white/5"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs text-white/50 hover:text-white hover:bg-white/10 transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                 >
-                    {isCopied ? <Check size={14} className="text-green-400" /> : <Copy size={14} />}
-                </button>
+                    <AnimatePresence mode="wait">
+                        {isCopied ? (
+                            <motion.div
+                                key="copied"
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.5 }}
+                                className="flex items-center gap-1 text-green-400"
+                            >
+                                <Check size={14} />
+                                <span>Copied!</span>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="copy"
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.5 }}
+                                className="flex items-center gap-1"
+                            >
+                                <Copy size={14} />
+                                <span>Copy</span>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.button>
             </div>
 
+            {/* Terminal Content */}
             <div
                 ref={scrollRef}
-                className="p-3 sm:p-6 min-h-[280px] sm:min-h-[380px] h-[280px] sm:h-[380px] overflow-y-auto relative"
+                className="p-5 sm:p-6 min-h-[320px] sm:min-h-[380px] max-h-[380px] overflow-y-auto relative"
             >
-                <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:20px_20px] pointer-events-none h-full" />
+                {/* Background Grid */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
 
-                {visibleLines.map((line, i) => {
-                    if (!line) return null; // Defensive check to prevent crash
-                    return (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="mb-3 relative z-10"
-                        >
-                            {line.type === 'prompt' ? (
-                                <div className="flex flex-col sm:flex-row sm:items-center text-white/80">
-                                    <span className="text-green-500 mr-2">?</span>
-                                    <span className="font-bold mr-2">{line.question}</span>
-                                    <span className="text-blue-400">{line.answer}</span>
-                                </div>
-                            ) : line.type === 'success' ? (
-                                <div className="text-green-400 font-bold">
-                                    {line.text}
-                                </div>
-                            ) : (
-                                <div className="flex items-start">
-                                    <span className="text-blue-500 mr-3 mt-1">➜</span>
-                                    <span className="text-white/70">{line.text}</span>
-                                </div>
-                            )}
-                        </motion.div>
-                    );
-                })}
+                <AnimatePresence>
+                    {visibleLines.map((line, i) => {
+                        if (!line) return null;
+                        return (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, x: -15, filter: 'blur(4px)' }}
+                                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                                transition={{ duration: 0.4, ease: 'easeOut' }}
+                                className="mb-3 relative z-10"
+                            >
+                                {line.type === 'prompt' ? (
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-0">
+                                        <span className="text-green-500 mr-2 font-bold">?</span>
+                                        <span className="font-semibold text-white/90 mr-2">{line.question}</span>
+                                        <motion.span 
+                                            className="text-blue-400 font-medium"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ delay: 0.2 }}
+                                        >
+                                            › {line.answer}
+                                        </motion.span>
+                                    </div>
+                                ) : line.type === 'success' ? (
+                                    <motion.div 
+                                        className="text-green-400 font-bold flex items-center gap-2"
+                                        initial={{ scale: 0.9 }}
+                                        animate={{ scale: 1 }}
+                                        transition={{ type: 'spring', stiffness: 400 }}
+                                    >
+                                        {line.text.includes('🚀') && <Sparkles size={14} className="text-yellow-400" />}
+                                        {line.text}
+                                    </motion.div>
+                                ) : line.type === 'info' ? (
+                                    <div className="flex items-start text-white/70">
+                                        <span>{line.text}</span>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-start">
+                                        <span className="text-blue-500 mr-3 mt-0.5">➜</span>
+                                        <span className="text-cyan-400">{line.text}</span>
+                                    </div>
+                                )}
+                            </motion.div>
+                        );
+                    })}
+                </AnimatePresence>
 
-                {visibleLines.length < commands.length && (
+                {/* Typing Cursor */}
+                {isTyping && (
                     <motion.div
                         animate={{ opacity: [1, 0] }}
-                        transition={{ repeat: Infinity, duration: 0.8 }}
-                        className="inline-block w-2.5 h-5 bg-blue-500 align-middle mt-1 box-shadow-glow relative z-10"
+                        transition={{ repeat: Infinity, duration: 0.7 }}
+                        className="inline-block w-2.5 h-5 bg-gradient-to-b from-blue-400 to-blue-600 rounded-sm ml-1 shadow-lg shadow-blue-500/50"
                     />
                 )}
+            </div>
+
+            {/* Terminal Footer */}
+            <div className="px-4 py-2 border-t border-white/5 bg-white/[0.02] flex items-center justify-between text-xs text-white/30">
+                <span>forgestack-os-cli v0.3.5</span>
+                <div className="flex items-center gap-2">
+                    <Circle size={6} className={`${isTyping ? 'text-yellow-500 animate-pulse' : 'text-green-500'} fill-current`} />
+                    <span>{isTyping ? 'Running...' : 'Complete'}</span>
+                </div>
             </div>
         </div>
     );
